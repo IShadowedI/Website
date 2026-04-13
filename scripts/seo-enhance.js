@@ -9,14 +9,14 @@ const path = require('path');
 const buildDir = path.join(__dirname, '..', 'build');
 
 const SITE_URL = 'https://dragonsshadow.com';
-const SITE_NAME = "Dragon's Shadow";
+const SITE_NAME = "Dragon's Den";
 const DEFAULT_IMAGE = 'assets/img/dragon/app/DragonCircleLogo.png';
-const TWITTER_HANDLE = '@DragonsShadow';
+const TWITTER_HANDLE = '@DragonsDen';
 
 // Per-page SEO metadata overrides
 const PAGE_META = {
   'home.html': {
-    ogTitle: "Dragon's Shadow — Tabletop & Creator Hub",
+    ogTitle: "Dragon's Den — Tabletop & Creator Hub",
     ogDesc: 'Tools, news, and resources for tabletop gamers, streamers, and content creators.',
     ogImage: DEFAULT_IMAGE,
     ogType: 'website',
@@ -77,58 +77,58 @@ const PAGE_META = {
     }
   },
   'shop.html': {
-    ogTitle: "Dragon's Shadow — Digital Shop",
+    ogTitle: "Dragon's Den — Digital Shop",
     ogDesc: 'OBS tools, stream overlays, tabletop assets, and creator resources.',
     ogImage: DEFAULT_IMAGE,
     ogType: 'website',
     schema: {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
-      name: "Dragon's Shadow Digital Shop",
+      name: "Dragon's Den Digital Shop",
       description: 'OBS tools, stream overlays, tabletop assets, and creator resources.',
       url: SITE_URL + '/shop.html'
     }
   },
   'blog-classic.html': {
-    ogTitle: "Dragon's Shadow — News & Articles",
+    ogTitle: "Dragon's Den — News & Articles",
     ogDesc: 'The latest tabletop gaming news, creator spotlights, and community updates.',
     ogImage: DEFAULT_IMAGE,
     ogType: 'website',
     schema: {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
-      name: "Dragon's Shadow News",
+      name: "Dragon's Den News",
       description: 'The latest tabletop gaming news, creator spotlights, and community updates.',
       url: SITE_URL + '/blog-classic.html'
     }
   },
   'about.html': {
-    ogTitle: "About Dragon's Shadow",
+    ogTitle: "About Dragon's Den",
     ogDesc: 'Learn about the team, mission, and community behind the Dragon\'s Shadow tabletop & creator hub.',
     ogImage: DEFAULT_IMAGE,
     ogType: 'website',
     schema: {
       '@context': 'https://schema.org',
       '@type': 'AboutPage',
-      name: "About Dragon's Shadow",
-      description: "Learn about the team, mission, and community behind Dragon's Shadow.",
+      name: "About Dragon's Den",
+      description: "Learn about the team, mission, and community behind Dragon's Den.",
       url: SITE_URL + '/about.html'
     }
   },
   'contact.html': {
-    ogTitle: "Contact Dragon's Shadow",
+    ogTitle: "Contact Dragon's Den",
     ogDesc: 'Get in touch with the Dragon\'s Shadow team — questions, feedback, or partnership inquiries.',
     ogImage: DEFAULT_IMAGE,
     ogType: 'website'
   },
   'plugins.html': {
-    ogTitle: "Dragon's Shadow — Plugins & Extensions",
+    ogTitle: "Dragon's Den — Plugins & Extensions",
     ogDesc: 'Browse community-built plugins, mods, and extensions for the Dragon\'s Shadow ecosystem.',
     ogImage: DEFAULT_IMAGE,
     ogType: 'website'
   },
   'api.html': {
-    ogTitle: "Dragon's Shadow — API Service",
+    ogTitle: "Dragon's Den — API Service",
     ogDesc: 'Developer API access for building tools and integrations on the Dragon\'s Shadow platform.',
     ogImage: DEFAULT_IMAGE,
     ogType: 'website'
@@ -150,7 +150,7 @@ function getPageMeta(filename) {
   // Blog posts
   if (filename.startsWith('blog-classic-') || filename.startsWith('blog-')) {
     return {
-      ogTitle: "Dragon's Shadow — News",
+      ogTitle: "Dragon's Den — News",
       ogDesc: 'Tabletop gaming news, creator spotlights, and community updates.',
       ogImage: DEFAULT_IMAGE,
       ogType: 'website'
@@ -162,8 +162,8 @@ function getPageMeta(filename) {
     const toolName = filename.replace('tools-', '').replace('.html', '').replace(/-/g, ' ');
     const capitalized = toolName.replace(/\b\w/g, c => c.toUpperCase());
     return {
-      ogTitle: `${capitalized} — Free Online Tool | Dragon's Shadow`,
-      ogDesc: `Use the free ${capitalized} tool from Dragon's Shadow tool suite. No sign-up required.`,
+      ogTitle: `${capitalized} — Free Online Tool | Dragon's Den`,
+      ogDesc: `Use the free ${capitalized} tool from Dragon's Den tool suite. No sign-up required.`,
       ogImage: DEFAULT_IMAGE,
       ogType: 'website'
     };
@@ -183,7 +183,7 @@ function getPageMeta(filename) {
 
   // Default fallback
   return {
-    ogTitle: "Dragon's Shadow — Tabletop & Creator Hub",
+    ogTitle: "Dragon's Den — Tabletop & Creator Hub",
     ogDesc: 'Tools, news, and resources for tabletop gamers, streamers, and content creators.',
     ogImage: DEFAULT_IMAGE,
     ogType: 'website'

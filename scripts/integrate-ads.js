@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * integrate-ads.js — Place real AdSense ad units across Dragon's Shadow site
+ * integrate-ads.js — Place real AdSense ad units across Dragon's Den site
  *
  * Ad Units:
  *   Horizontal1:          3056266148

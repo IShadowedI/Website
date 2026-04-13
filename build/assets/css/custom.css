@@ -1414,15 +1414,15 @@ article.post-grid,
 .landing-detail-cover span {
   border-color: var(--accent) !important;
 }
-/* Lighter red CTA button + subtitle on landing page */
+/* Darker CTA button on landing page */
 .site-layout--landing .btn--landing {
-  background-color: var(--accent-light) !important;
-  border-color: var(--accent-light) !important;
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
 }
 .site-layout--landing .btn--landing:hover {
-  background-color: #FF6666 !important;
-  border-color: #FF6666 !important;
-  box-shadow: 0 0 24px rgba(255,77,77,0.4);
+  background-color: var(--accent-dark) !important;
+  border-color: var(--accent-dark) !important;
+  box-shadow: 0 0 24px rgba(139,0,0,0.5);
 }
 .site-layout--landing .landing-subtitle {
   color: var(--accent-light);
@@ -1432,6 +1432,14 @@ article.post-grid,
 }
 .site-layout--landing .social-menu--landing li a > i:not(.glitch-layer) {
   color: var(--accent) !important;
+}
+/* Hide glitch-layers by default — only reveal on hover */
+.social-menu--landing-glitch .glitch-layer {
+  opacity: 0 !important;
+  transition: opacity 0.15s;
+}
+.social-menu--landing-glitch li a:hover .glitch-layer {
+  opacity: 0.8 !important;
 }
 /* Preserve template glitch-layer colors (magenta / cyan) */
 .social-menu--landing-glitch .glitch-layer--1 {
@@ -2242,4 +2250,61 @@ article.post-grid,
     gap: 10px;
     flex-wrap: wrap;
   }
+}
+
+/* ============================================================
+   Article body: prevent images from overflowing / clipping
+   ============================================================ */
+.post--single .post__body img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em 0;
+}
+.post--single .post__body figure {
+  max-width: 100%;
+  margin: 1.5em 0;
+  overflow: hidden;
+}
+.post--single .post__body figure img {
+  max-width: 100%;
+  height: auto;
+}
+.post--single .post__body {
+  overflow-x: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+/* Tables & iframes inside articles */
+.post--single .post__body table {
+  max-width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+.post--single .post__body iframe {
+  max-width: 100%;
+}
+
+/* ============================================================
+   User comments section (Giscus / fallback)
+   ============================================================ */
+.ds-comments {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.ds-comments__title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  margin: 0 0 16px;
+}
+.giscus {
+  max-width: 100%;
+}
+.giscus-frame {
+  width: 100% !important;
 }

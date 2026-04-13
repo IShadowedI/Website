@@ -2,7 +2,7 @@
  * Tabletop Gaming News Aggregator
  * 
  * Fetches RSS feeds from tabletop gaming news sources and generates
- * static blog pages for the Dragon's Shadow site.
+ * static blog pages for the Dragon's Den site.
  * 
  * Usage: node scripts/fetch-news.js
  * Or:    npm run update-news
@@ -15,6 +15,7 @@ const path = require('path');
 const https = require('https');
 const http = require('http');
 const { URL } = require('url');
+const sharp = require('sharp');
 
 const BUILD = path.join(__dirname, '..', 'build');
 const DATA_FILE = path.join(__dirname, '..', 'news-data.json');
@@ -298,12 +299,59 @@ function downloadImage(imageUrl, slug, index) {
 }
 
 /**
+ * Validate a downloaded image meets quality standards.
+ * Checks: minimum resolution, not predominantly black, not corrupt.
+ * Returns true if image passes, false if it should be discarded.
+ */
+async function validateImage(localAbsPath) {
+  try {
+    if (!fs.existsSync(localAbsPath)) return false;
+    const stats = fs.statSync(localAbsPath);
+    if (stats.size < 2000) return false; // too small to be a real image
+
+    const metadata = await sharp(localAbsPath).metadata();
+    if (!metadata.width || !metadata.height) return false;
+
+    // Minimum 400×200
+    if (metadata.width < 400 || metadata.height < 200) {
+      console.log(`    [SKIP] Too small: ${metadata.width}x${metadata.height} — ${path.basename(localAbsPath)}`);
+      return false;
+    }
+
+    // Sample pixels to detect predominantly black / single-colour images
+    const { data, info } = await sharp(localAbsPath)
+      .resize(50, 50, { fit: 'cover' })
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+
+    const pixels = info.width * info.height;
+    let darkPixels = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i], g = data[i + 1], b = data[i + 2];
+      if (r < 15 && g < 15 && b < 15) darkPixels++;
+    }
+    const darkRatio = darkPixels / pixels;
+    if (darkRatio > 0.85) {
+      console.log(`    [SKIP] Nearly black (${(darkRatio * 100).toFixed(0)}% dark) — ${path.basename(localAbsPath)}`);
+      return false;
+    }
+
+    return true;
+  } catch (err) {
+    console.log(`    [SKIP] Corrupt/unreadable image — ${path.basename(localAbsPath)}: ${err.message}`);
+    return false;
+  }
+}
+
+/**
  * Download images in batches to avoid overwhelming servers.
  */
 async function downloadImagesForItems(items) {
   console.log(`\nDownloading images for ${items.length} articles...`);
   let downloaded = 0;
   let failed = 0;
+  let rejected = 0;
 
   for (let i = 0; i < items.length; i += MAX_CONCURRENT_DOWNLOADS) {
     const batch = items.slice(i, i + MAX_CONCURRENT_DOWNLOADS);
@@ -312,8 +360,17 @@ async function downloadImagesForItems(items) {
         if (!item.image) return null;
         const localPath = await downloadImage(item.image, item.slug, 0);
         if (localPath) {
-          item.localImage = localPath;
-          downloaded++;
+          const absPath = path.join(BUILD, localPath);
+          const valid = await validateImage(absPath);
+          if (valid) {
+            item.localImage = localPath;
+            downloaded++;
+          } else {
+            // Remove the bad image file
+            try { fs.unlinkSync(absPath); } catch {}
+            item.localImage = null;
+            rejected++;
+          }
         } else {
           failed++;
         }
@@ -322,7 +379,7 @@ async function downloadImagesForItems(items) {
     );
   }
 
-  console.log(`  Downloaded: ${downloaded}, Failed: ${failed}, No image: ${items.filter(i => !i.image).length}`);
+  console.log(`  Downloaded: ${downloaded}, Rejected: ${rejected}, Failed: ${failed}, No image: ${items.filter(i => !i.image).length}`);
 }
 
 /**
@@ -406,6 +463,36 @@ async function scrapeArticle(url, source) {
 
   const $ = cheerio.load(html);
 
+  // ── Extract SEO metadata before stripping the page ──
+  const seo = {};
+  // Meta description
+  const metaDesc = $('meta[name="description"]').attr('content')
+    || $('meta[property="og:description"]').attr('content') || '';
+  if (metaDesc) seo.description = metaDesc.substring(0, 300);
+  // Meta keywords
+  const metaKw = $('meta[name="keywords"]').attr('content') || '';
+  if (metaKw) seo.keywords = metaKw.substring(0, 500);
+  // OG tags
+  const ogImage = $('meta[property="og:image"]').attr('content') || '';
+  if (ogImage) seo.ogImage = ogImage;
+  // Article tags (common on blogs)
+  const tags = [];
+  $('meta[property="article:tag"]').each((_, el) => {
+    const t = $(el).attr('content');
+    if (t) tags.push(t.trim());
+  });
+  // Also try to extract from visible tag links
+  $('.post-tags a, .tags a, .tagcloud a, [rel="tag"]').each((_, el) => {
+    const t = $(el).text().trim();
+    if (t && t.length < 40 && !tags.includes(t)) tags.push(t);
+  });
+  if (tags.length) seo.tags = tags.slice(0, 10);
+  // Article author
+  const author = $('meta[name="author"]').attr('content')
+    || $('meta[property="article:author"]').attr('content')
+    || $('[rel="author"]').first().text().trim() || '';
+  if (author) seo.author = author.substring(0, 80);
+
   // Remove unwanted elements
   $('script, style, nav, header, footer, .sidebar, .related-posts, .share-buttons, .social-share, .newsletter-signup, .ad, .advertisement, [class*="adsbygoogle"], .wp-block-embed').remove();
 
@@ -470,7 +557,8 @@ async function scrapeArticle(url, source) {
 
   return {
     fullContent: sanitizeContent(articleHtml),
-    comments: comments.slice(0, 3)  // Max 3 top comments
+    comments: comments.slice(0, 3),  // Max 3 top comments
+    seo
   };
 }
 
@@ -479,7 +567,7 @@ async function scrapeArticle(url, source) {
  */
 async function scrapeFullArticles(items) {
   console.log(`\nScraping full articles for ${items.length} items...`);
-  let scraped = 0, withComments = 0, failed = 0;
+  let scraped = 0, withComments = 0, withSeo = 0, failed = 0;
 
   for (let i = 0; i < items.length; i += MAX_CONCURRENT_DOWNLOADS) {
     const batch = items.slice(i, i + MAX_CONCURRENT_DOWNLOADS);
@@ -494,6 +582,10 @@ async function scrapeFullArticles(items) {
             item.comments = result.comments;
             withComments++;
           }
+          if (result.seo && Object.keys(result.seo).length > 0) {
+            item.seo = result.seo;
+            withSeo++;
+          }
         }
       } catch (err) {
         failed++;
@@ -501,7 +593,7 @@ async function scrapeFullArticles(items) {
     }));
   }
 
-  console.log(`  Scraped: ${scraped}, With comments: ${withComments}, Failed/shorter: ${failed}`);
+  console.log(`  Scraped: ${scraped}, With SEO data: ${withSeo}, With comments: ${withComments}, Failed/shorter: ${failed}`);
 }
 
 // ============================================================
@@ -512,7 +604,7 @@ async function fetchAllFeeds() {
   const parser = new RSSParser({
     timeout: 15000,
     headers: {
-      'User-Agent': 'Mozilla/5.0 (compatible; DragonsShadowNewsBot/1.0)',
+      'User-Agent': 'Mozilla/5.0 (compatible; DragonsDenNewsBot/1.0)',
       'Accept': 'application/rss+xml, application/xml, text/xml, */*'
     },
     customFields: {
@@ -590,11 +682,52 @@ function generatePostPage(item, index, template) {
   const safeTitle = escapeHtml(item.title);
   
   // Update title
-  html = html.replace(/<title>.*?<\/title>/, `<title>${safeTitle} - Dragon's Shadow</title>`);
+  html = html.replace(/<title>.*?<\/title>/, `<title>${safeTitle} - Dragon's Den</title>`);
   html = html.replace(
     /<meta name="description" content="[^"]*">/,
     `<meta name="description" content="${escapeHtml(item.excerpt)}">`
   );
+
+  // ── Inject scraped SEO metadata into <head> ──
+  if (item.seo) {
+    const seoTags = [];
+    if (item.seo.keywords) {
+      seoTags.push(`<meta name="keywords" content="${escapeHtml(item.seo.keywords)}">`);
+    }
+    if (item.seo.tags && item.seo.tags.length) {
+      const kwFromTags = item.seo.tags.join(', ');
+      // Merge with any existing keywords or add new
+      if (!item.seo.keywords) {
+        seoTags.push(`<meta name="keywords" content="${escapeHtml(kwFromTags)}">`);
+      }
+      seoTags.push(`<meta property="article:tag" content="${escapeHtml(item.seo.tags[0])}">`);
+      for (const tag of item.seo.tags.slice(1)) {
+        seoTags.push(`<meta property="article:tag" content="${escapeHtml(tag)}">`);
+      }
+    }
+    if (item.seo.author) {
+      seoTags.push(`<meta name="author" content="${escapeHtml(item.seo.author)}">`);
+      seoTags.push(`<meta property="article:author" content="${escapeHtml(item.seo.author)}">`);
+    }
+    // JSON-LD Article schema with extracted SEO
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'NewsArticle',
+      headline: item.title,
+      datePublished: item.date,
+      description: item.seo.description || item.excerpt,
+      publisher: { '@type': 'Organization', name: "Dragon's Den" },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `https://dragonsshadow.com/posts/${item.slug}.html` }
+    };
+    if (item.seo.author) jsonLd.author = { '@type': 'Person', name: item.seo.author };
+    if (item.localImage) jsonLd.image = `https://dragonsshadow.com/${item.localImage}`;
+    if (item.seo.tags) jsonLd.keywords = item.seo.tags.join(', ');
+    seoTags.push(`<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`);
+
+    if (seoTags.length) {
+      html = html.replace('</head>', seoTags.join('\n') + '\n</head>');
+    }
+  }
   
   // Replace the entire article content block
   const articleStart = html.indexOf('<!-- Post -->');
@@ -635,10 +768,12 @@ function generatePostPage(item, index, template) {
     html = before + articleHtml + after;
   }
   
-  // Insert comments if we scraped any from the source
+  // Insert comments section: scraped comments + Giscus user comment widget
   const commentsPlaceholder = html.indexOf('<!-- COMMENTS_PLACEHOLDER -->');
   if (commentsPlaceholder !== -1) {
     let commentsHtml = '';
+
+    // Scraped source-page comments (if any)
     if (item.comments && item.comments.length > 0) {
       const commentItems = item.comments.map(c => `
 							<li class="comment">
@@ -650,13 +785,36 @@ function generatePostPage(item, index, template) {
 									</div>
 								</div>
 							</li>`).join('');
-      commentsHtml = `
+      commentsHtml += `
 					<div class="post-comments" id="comments">
 						<h4 class="post-comments__title">Top Comments (${item.comments.length})</h4>
 						<ol class="comments">${commentItems}
 						</ol>
 					</div>`;
     }
+
+    // Giscus user comment widget (GitHub Discussions)
+    commentsHtml += `
+					<div class="ds-comments" id="user-comments">
+						<h4 class="ds-comments__title">Leave a Comment</h4>
+						<script src="https://giscus.app/client.js"
+							data-repo="IShadowedI/Website"
+							data-repo-id=""
+							data-category="Article Comments"
+							data-category-id=""
+							data-mapping="pathname"
+							data-strict="0"
+							data-reactions-enabled="1"
+							data-emit-metadata="0"
+							data-input-position="top"
+							data-theme="dark_dimmed"
+							data-lang="en"
+							data-loading="lazy"
+							crossorigin="anonymous"
+							async>
+						</script>
+					</div>`;
+
     html = html.replace('<!-- COMMENTS_PLACEHOLDER -->', commentsHtml);
   }
   
@@ -743,7 +901,7 @@ ${postsHtml}
   }
   
   // Update page title
-  html = html.replace(/<title>.*?<\/title>/, '<title>Tabletop Gaming News - Dragon\'s Shadow</title>');
+  html = html.replace(/<title>.*?<\/title>/, '<title>Tabletop Gaming News - Dragon\'s Den</title>');
   
   return html;
 }
@@ -819,7 +977,7 @@ function buildNewsPaginationNav(currentPage, totalPages) {
 // ============================================================
 
 async function main() {
-  console.log('=== Dragon\'s Shadow News Aggregator ===');
+  console.log('=== Dragon\'s Den News Aggregator ===');
   console.log('Fetching tabletop gaming news feeds...\n');
 
   // Ensure directories exist
@@ -914,7 +1072,7 @@ async function main() {
       const before = b4.substring(0, b4ContentStart);
       const after = b4.substring(b4ContentEnd);
       b4 = before + `<div class="content blog-layout--style-1">\n\n${feedPostsHtml}\n\n\t\t\t</div>` + after;
-      b4 = b4.replace(/<title>.*?<\/title>/, '<title>News Feed - Dragon\'s Shadow</title>');
+      b4 = b4.replace(/<title>.*?<\/title>/, '<title>News Feed - Dragon\'s Den</title>');
       fs.writeFileSync(path.join(BUILD, 'blog-4.html'), b4, 'utf8');
       console.log('Updated blog-4.html');
     }
