@@ -95,7 +95,9 @@ a {
 .blog-layout--style-3 .post__thumbnail img,
 .blog-layout--style-3 .post__thumbnail > a img,
 .blog-layout--style-4 .post__thumbnail img,
-.blog-layout--style-4 .post__thumbnail > a img {
+.blog-layout--style-4 .post__thumbnail > a img,
+.blog-layout--classic .post__thumbnail img,
+.blog-layout--classic .post__thumbnail > a img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -117,17 +119,30 @@ a {
 .blog-layout--style-4 .post__thumbnail > a {
   height: 100%;
 }
+/* Classic blog layout (blog-classic.html) — make thumbnail fill its flex column */
+.blog-layout--classic .post__thumbnail {
+  overflow: hidden;
+}
+.blog-layout--classic .post__thumbnail > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 .widget-carousel .post__thumbnail img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+/* Single blog post — let the template's fixed-position full-height layout work */
 .post--single .post__thumbnail img {
   width: 100%;
-  height: auto;
-  max-height: 500px;
+  height: 100%;
   object-fit: cover;
   object-position: center;
+}
+.post--single .post__thumbnail figure {
+  width: 100%;
+  height: 100%;
 }
 
 /* Tool suite card hover effects */
@@ -1453,9 +1468,218 @@ article.post-grid,
   height: 100%;
   object-fit: cover;
 }
-.post--single .post__thumbnail img {
+
+/* ============================================================
+   SHOP SIDEBAR + LAYOUT (reference: redtdxt.webp style)
+   ============================================================ */
+.shop-layout {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+.shop-sidebar {
+  flex: 0 0 220px;
+  background: var(--surface-raised, #12121a);
+  border: 1px solid var(--border-subtle, rgba(255,255,255,.08));
+  border-radius: 10px;
+  padding: 0;
+  position: sticky;
+  top: 90px;
+  overflow: hidden;
+}
+.shop-sidebar__title {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #fff;
+  padding: 16px 18px;
+  margin: 0;
+  background: var(--surface-hover, #1a1a28);
+  border-bottom: 1px solid var(--border-subtle, rgba(255,255,255,.08));
+}
+.shop-sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.shop-sidebar__category {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.shop-sidebar__cat-header {
+  display: block;
+  padding: 11px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,.7);
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  transition: color 0.15s, background 0.15s;
+}
+.shop-sidebar__category:hover .shop-sidebar__cat-header,
+.shop-sidebar__category--active .shop-sidebar__cat-header {
+  color: #fff;
+  background: var(--accent, #8B0000);
+}
+.shop-sidebar__sub {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.shop-sidebar__category--active .shop-sidebar__sub,
+.shop-sidebar__category:hover .shop-sidebar__sub {
+  max-height: 200px;
+}
+.shop-sidebar__sub li {
+  padding: 8px 18px 8px 30px;
+  font-size: 12px;
+  color: rgba(255,255,255,.55);
+  cursor: pointer;
+  transition: color 0.15s;
+  border-bottom: 1px solid rgba(255,255,255,.03);
+}
+.shop-sidebar__sub li:hover {
+  color: var(--accent-light, #FF4D4D);
+}
+.shop-main {
+  flex: 1;
+  min-width: 0;
+}
+/* Make shop cards 3-per-row by default */
+.shop-grid {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+.shop-card__footer {
+  gap: 8px;
+}
+.shop-card__actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+@media (max-width: 1200px) {
+  .shop-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 767px) {
+  .shop-layout {
+    flex-direction: column;
+  }
+  .shop-sidebar {
+    flex: none;
+    width: 100%;
+    position: static;
+  }
+  .shop-sidebar__sub {
+    max-height: 200px;
+  }
+  .shop-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+  }
+}
+
+/* ============================================================
+   BLOG-CLASSIC: Overlay Card Design (reference: oanrkjnsdf.webp)
+   ============================================================ */
+.blog-layout--classic .post.has-post-thumbnail {
+  position: relative;
+  display: block !important;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  min-height: 260px;
+  background: #000;
+}
+.blog-layout--classic .post.has-post-thumbnail .post__thumbnail {
+  position: absolute !important;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-height: 480px;
+  height: 100%;
+  flex-basis: auto !important;
+}
+.blog-layout--classic .post.has-post-thumbnail .post__thumbnail > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.blog-layout--classic .post.has-post-thumbnail .post__thumbnail img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 4px;
+  object-position: center;
+  transition: transform 0.4s ease, opacity 0.3s;
+  opacity: 0.55;
+}
+.blog-layout--classic .post.has-post-thumbnail:hover .post__thumbnail img {
+  transform: scale(1.03);
+  opacity: 0.7;
+}
+/* Gradient overlay on bottom */
+.blog-layout--classic .post.has-post-thumbnail::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 65%;
+  background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+/* Text overlay */
+.blog-layout--classic .post.has-post-thumbnail .post__body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 20px 24px !important;
+  flex-basis: auto !important;
+  background: none !important;
+}
+/* Category badge — red pill */
+.blog-layout--classic .post__cats-item a {
+  display: inline-block;
+  background: var(--accent, #8B0000) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 3px 10px;
+  border-radius: 3px;
+  text-decoration: none;
+}
+.blog-layout--classic .post__title a {
+  color: #fff !important;
+  text-decoration: none;
+}
+.blog-layout--classic .post__title {
+  font-size: 18px !important;
+  line-height: 1.3;
+  margin: 8px 0 6px;
+}
+.blog-layout--classic .post__meta-item {
+  font-size: 12px;
+  color: rgba(255,255,255,.5) !important;
+}
+.blog-layout--classic .post__excerpt {
+  display: none !important;
+}
+/* First article = featured / bigger card */
+.blog-layout--classic .post.has-post-thumbnail:first-child {
+  min-height: 380px;
+}
+.blog-layout--classic .post.has-post-thumbnail:first-child .post__title {
+  font-size: 24px !important;
+}
+.blog-layout--classic .post.has-post-thumbnail:first-child .post__thumbnail img {
+  opacity: 0.65;
 }

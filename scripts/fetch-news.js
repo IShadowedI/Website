@@ -32,21 +32,21 @@ const FEEDS = [
     source: 'Bell of Lost Souls',
     category: 'D&D',
     color: 'color-danger',
-    maxItems: 10
+    maxItems: 15
   },
   {
     url: 'https://nerdist.com/tag/dungeons-and-dragons/feed/',
     source: 'Nerdist',
     category: 'D&D',
     color: 'color-danger',
-    maxItems: 8
+    maxItems: 12
   },
   {
     url: 'https://www.dndbeyond.com/posts/rss',
     source: 'D&D Beyond',
     category: 'D&D',
     color: 'color-danger',
-    maxItems: 8
+    maxItems: 12
   },
   // MTG
   {
@@ -54,14 +54,14 @@ const FEEDS = [
     source: 'Bell of Lost Souls',
     category: 'MTG',
     color: 'color-primary',
-    maxItems: 6
+    maxItems: 10
   },
   {
     url: 'https://www.wargamer.com/feed',
     source: 'Wargamer',
     category: 'Tabletop',
     color: 'color-warning',
-    maxItems: 6
+    maxItems: 10
   },
   // General tabletop
   {
@@ -69,21 +69,21 @@ const FEEDS = [
     source: 'Dicebreaker',
     category: 'Tabletop',
     color: 'color-success',
-    maxItems: 5
+    maxItems: 10
   },
   {
     url: 'https://www.goonhammer.com/feed/',
     source: 'Goonhammer',
     category: 'Wargaming',
     color: 'color-warning',
-    maxItems: 5
+    maxItems: 10
   },
   {
     url: 'https://www.tabletopgamingnews.com/feed/',
     source: 'Tabletop Gaming News',
     category: 'Board Games',
     color: 'color-success',
-    maxItems: 4
+    maxItems: 8
   }
 ];
 
@@ -749,6 +749,43 @@ ${postsHtml}
 }
 
 // ============================================================
+// Pagination
+// ============================================================
+
+function buildPaginationNav(currentPage, totalPages) {
+  const pageFile = (p) => p === 1 ? 'blog-classic.html' : `blog-classic-${p}.html`;
+
+  let links = '';
+
+  // Previous
+  if (currentPage > 1) {
+    links += `<a class="prev page-numbers" href="${pageFile(currentPage - 1)}"><span><i class="fa fa-chevron-left"></i></span></a> `;
+  } else {
+    links += `<span class="prev page-numbers placeholder"><span><i class="fa fa-chevron-left"></i></span> </span>`;
+  }
+
+  // Page numbers — show first, last, current, and neighbors
+  for (let p = 1; p <= totalPages; p++) {
+    if (p === 1 || p === totalPages || (p >= currentPage - 1 && p <= currentPage + 1)) {
+      if (p === currentPage) {
+        links += `<span aria-current="page" class="page-numbers current">${p}</span> `;
+      } else {
+        links += `<a class="page-numbers" href="${pageFile(p)}">${p}</a> `;
+      }
+    } else if (p === currentPage - 2 || p === currentPage + 2) {
+      links += `<span class="page-numbers dots">\u2026</span> `;
+    }
+  }
+
+  // Next
+  if (currentPage < totalPages) {
+    links += `<a class="next page-numbers" href="${pageFile(currentPage + 1)}"><span><i class="fa fa-chevron-right"></i></span></a>`;
+  }
+
+  return `<nav class="navigation pagination" role="navigation" aria-label="Posts"><div class="nav-links">${links}</div></nav>`;
+}
+
+// ============================================================
 // Main
 // ============================================================
 
@@ -789,7 +826,7 @@ async function main() {
   // Generate individual post pages
   console.log('\nGenerating post pages...');
   let generated = 0;
-  for (let i = 0; i < Math.min(items.length, 30); i++) {
+  for (let i = 0; i < Math.min(items.length, 60); i++) {
     const item = items[i];
     const postHtml = generatePostPage(item, i, postTemplate);
     const filename = `${item.slug}.html`;
@@ -915,14 +952,21 @@ async function main() {
     }
   }
 
-  // ── Update blog-classic.html ──
-  console.log('Updating blog-classic.html...');
+  // ── Update blog-classic.html with pagination ──
+  console.log('Generating paginated blog-classic pages...');
   const classicPath = path.join(BUILD, 'blog-classic.html');
   if (fs.existsSync(classicPath)) {
-    let classicHtml = fs.readFileSync(classicPath, 'utf8');
-    const classicArticles = items.slice(0, 10).map((item, i) => {
-      const img = item.localImage || PLACEHOLDER_IMGS[i % PLACEHOLDER_IMGS.length];
-      return `\t\t\t\t\t\t\t<article class="post has-post-thumbnail">
+    const classicTemplate = fs.readFileSync(classicPath, 'utf8');
+    const ITEMS_PER_PAGE = 10;
+    const totalPages = Math.ceil(Math.min(items.length, 60) / ITEMS_PER_PAGE);
+
+    for (let page = 1; page <= totalPages; page++) {
+      const startIdx = (page - 1) * ITEMS_PER_PAGE;
+      const pageItems = items.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+
+      const classicArticles = pageItems.map((item, i) => {
+        const img = item.localImage || PLACEHOLDER_IMGS[(startIdx + i) % PLACEHOLDER_IMGS.length];
+        return `\t\t\t\t\t\t\t<article class="post has-post-thumbnail">
 \t\t\t\t\t\t\t\t<div class="post__thumbnail">
 \t\t\t\t\t\t\t\t\t<a href="posts/${item.slug}.html">
 \t\t\t\t\t\t\t\t\t\t<img src="${escapeHtml(img)}" alt="${escapeHtml(item.title)}">
@@ -948,18 +992,70 @@ async function main() {
 \t\t\t\t\t\t\t\t\t</div>
 \t\t\t\t\t\t\t\t</div>
 \t\t\t\t\t\t\t</article>`;
-    }).join('\n\n');
+      }).join('\n\n');
 
-    // Replace articles between first <article> and the pagination nav
-    const firstArticle = classicHtml.indexOf('<article class="post has-post-thumbnail">');
-    const paginationNav = classicHtml.indexOf('<nav class="navigation pagination"');
-    if (firstArticle !== -1 && paginationNav !== -1) {
-      const before = classicHtml.substring(0, firstArticle);
-      const after = classicHtml.substring(paginationNav);
-      classicHtml = before + classicArticles + '\n\n\t\t\t\t\t\t\t' + after;
-      fs.writeFileSync(classicPath, classicHtml, 'utf8');
-      console.log('Updated blog-classic.html');
+      // Build pagination nav
+      const pageFilename = page === 1 ? 'blog-classic.html' : `blog-classic-${page}.html`;
+      const paginationHtml = buildPaginationNav(page, totalPages);
+
+      let classicHtml = classicTemplate;
+
+      // Replace articles between first <article> and the pagination nav
+      const firstArticle = classicHtml.indexOf('<article class="post has-post-thumbnail">');
+      const paginationNav = classicHtml.indexOf('<nav class="navigation pagination"');
+      if (firstArticle !== -1 && paginationNav !== -1) {
+        // Find end of the pagination nav
+        const paginationEnd = classicHtml.indexOf('</nav>', paginationNav) + '</nav>'.length;
+        const before = classicHtml.substring(0, firstArticle);
+        const after = classicHtml.substring(paginationEnd);
+        classicHtml = before + classicArticles + '\n\n\t\t\t\t\t\t\t' + paginationHtml + after;
+      }
+
+      // Replace Popular News sidebar with real articles
+      const popularStart = classicHtml.indexOf('<h3 class="widget-title">Popular News</h3>');
+      if (popularStart !== -1) {
+        const popularListStart = classicHtml.indexOf('<ul class="ncr-posts-list', popularStart);
+        const popularListEnd = classicHtml.indexOf('</ul>', popularListStart) + '</ul>'.length;
+        if (popularListStart !== -1 && popularListEnd > popularListStart) {
+          // Pick top 5 articles from different sources for variety
+          const popularItems = items.slice(0, 5);
+          const popularHtml = '<ul class="ncr-posts-list list-unstyled">' + popularItems.map(it => {
+            const img = it.localImage || PLACEHOLDER_IMGS[0];
+            return `<li class="ncr-posts-list__item has-post-thumbnail post"><div class="post__thumbnail"><a href="posts/${it.slug}.html"><img src="${escapeHtml(img)}" alt=""></a></div><div class="post__body"><div class="post__header"><ul class="post__cats list-unstyled"><li class="post__cats-item ${it.color}"><a href="#">${escapeHtml(it.category)}</a></li></ul><h2 class="post__title h6"><a href="posts/${it.slug}.html">${escapeHtml(it.title)}</a></h2><ul class="post__meta list-unstyled"><li class="post__meta-item post__meta-item--date">${it.dateFormatted}</li></ul></div></div></li>`;
+          }).join('') + '</ul>';
+          classicHtml = classicHtml.substring(0, popularListStart) + popularHtml + classicHtml.substring(popularListEnd);
+        }
+      }
+
+      // Replace Latest Posts sidebar
+      const latestStart = classicHtml.indexOf('<h3 class="widget-title">Latest Posts</h3>');
+      if (latestStart !== -1) {
+        const latestListStart = classicHtml.indexOf('<ul class="ncr-posts-list', latestStart);
+        const latestListEnd = classicHtml.indexOf('</ul>', latestListStart) + '</ul>'.length;
+        if (latestListStart !== -1 && latestListEnd > latestListStart) {
+          const latestItems = items.slice(5, 10);
+          const latestHtml = '<ul class="ncr-posts-list ncr-posts-list--thumb-on-bg list-unstyled">' + latestItems.map(it => {
+            const img = it.localImage || PLACEHOLDER_IMGS[0];
+            return `<li class="ncr-posts-list__item has-post-thumbnail post"><div class="post__thumbnail"><img src="${escapeHtml(img)}" alt=""></div><div class="post__body"><div class="post__header"><ul class="post__cats list-unstyled"><li class="post__cats-item ${it.color}"><a href="#">${escapeHtml(it.category)}</a></li></ul><h2 class="post__title h6"><a href="posts/${it.slug}.html" class="stretched-link">${escapeHtml(it.title)}</a></h2><ul class="post__meta list-unstyled"><li class="post__meta-item post__meta-item--date">${it.dateFormatted}</li></ul></div></div></li>`;
+          }).join('') + '</ul>';
+          classicHtml = classicHtml.substring(0, latestListStart) + latestHtml + classicHtml.substring(latestListEnd);
+        }
+      }
+
+      // Remove the hardcoded "Latest Comments" widget (no real comments to show)
+      const commentsWidgetStart = classicHtml.indexOf('<!-- Comment List -->');
+      if (commentsWidgetStart !== -1) {
+        const commentsWidgetEnd = classicHtml.indexOf('<!-- Comment List / End -->', commentsWidgetStart);
+        if (commentsWidgetEnd !== -1) {
+          classicHtml = classicHtml.substring(0, commentsWidgetStart) + classicHtml.substring(commentsWidgetEnd + '<!-- Comment List / End -->'.length);
+        }
+      }
+
+      const outPath = path.join(BUILD, pageFilename);
+      fs.writeFileSync(outPath, classicHtml, 'utf8');
+      console.log(`  Generated ${pageFilename} (${pageItems.length} articles)`);
     }
+    console.log(`  ${totalPages} blog-classic pages total`);
   }
 
   console.log('\n=== Done! ===');

@@ -255,8 +255,59 @@
 					</div>
 
 					<div class="page-content">
-
-						<!-- Search, Filters & Sort -->
+						<div class="shop-layout">
+							<!-- Category Sidebar -->
+							<aside class="shop-sidebar" id="shopSidebar">
+								<h4 class="shop-sidebar__title">Categories</h4>
+								<ul class="shop-sidebar__list">
+									<li class="shop-sidebar__category shop-sidebar__category--active" data-category="all">
+										<span class="shop-sidebar__cat-header">All Products</span>
+									</li>
+									<li class="shop-sidebar__category" data-category="maps">
+										<span class="shop-sidebar__cat-header">Maps &amp; Battlemaps</span>
+										<ul class="shop-sidebar__sub">
+											<li data-category="maps">Dungeon Maps</li>
+											<li data-category="maps">Wilderness Maps</li>
+											<li data-category="maps">Coastal &amp; Sea</li>
+										</ul>
+									</li>
+									<li class="shop-sidebar__category" data-category="templates">
+										<span class="shop-sidebar__cat-header">Templates</span>
+										<ul class="shop-sidebar__sub">
+											<li data-category="templates">Character Sheets</li>
+											<li data-category="templates">Session Planners</li>
+											<li data-category="templates">Resumes &amp; CVs</li>
+										</ul>
+									</li>
+									<li class="shop-sidebar__category" data-category="assets">
+										<span class="shop-sidebar__cat-header">Design Assets</span>
+										<ul class="shop-sidebar__sub">
+											<li data-category="assets">Icon Sets</li>
+											<li data-category="assets">Token Portraits</li>
+										</ul>
+									</li>
+									<li class="shop-sidebar__category" data-category="plugins">
+										<span class="shop-sidebar__cat-header">Plugins</span>
+										<ul class="shop-sidebar__sub">
+											<li data-category="plugins">Dice Rollers</li>
+											<li data-category="plugins">Initiative Trackers</li>
+											<li data-category="plugins">Soundboards</li>
+										</ul>
+									</li>
+									<li class="shop-sidebar__category" data-category="tools">
+										<span class="shop-sidebar__cat-header">Tools</span>
+									</li>
+									<li class="shop-sidebar__category" data-category="streaming">
+										<span class="shop-sidebar__cat-header">Streaming &amp; OBS</span>
+										<ul class="shop-sidebar__sub">
+											<li data-category="streaming">Overlay Packs</li>
+											<li data-category="streaming">Stream Alerts</li>
+										</ul>
+									</li>
+								</ul>
+							</aside>
+							<!-- Main Product Area -->
+							<div class="shop-main">
 						<div class="shop-toolbar">
 							<div class="shop-toolbar__top">
 								<div class="shop-search">
@@ -731,6 +782,8 @@
 								<a href="plugins-submit.html" class="btn btn-primary">Submit a Product</a>
 							</div>
 						</div>
+						</div><!-- /.shop-main -->
+						</div><!-- /.shop-layout -->
 
 						<!-- Shop Script -->
 						<script>
@@ -787,6 +840,29 @@
 									this.classList.add('active');
 									activeCategory = this.getAttribute('data-category');
 									filterCards();
+									syncSidebar(activeCategory);
+								});
+							});
+
+							// Sidebar category clicks
+							var sidebarCats = document.querySelectorAll('.shop-sidebar__category, .shop-sidebar__sub li');
+							function syncSidebar(cat) {
+								document.querySelectorAll('.shop-sidebar__category').forEach(function(el) {
+									el.classList.toggle('shop-sidebar__category--active', el.getAttribute('data-category') === cat || cat === 'all' && el.getAttribute('data-category') === 'all');
+								});
+							}
+							sidebarCats.forEach(function(el) {
+								el.addEventListener('click', function(e) {
+									e.stopPropagation();
+									var cat = this.getAttribute('data-category');
+									if (cat) {
+										activeCategory = cat;
+										filterCards();
+										syncSidebar(cat);
+										pills.forEach(function(p) {
+											p.classList.toggle('active', p.getAttribute('data-category') === cat);
+										});
+									}
 								});
 							});
 						})();
