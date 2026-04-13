@@ -436,6 +436,18 @@ textarea.tool-input {
 .site-content {
   background-color: transparent;
 }
+.site-layout--default .site-content__inner,
+.site-layout--default-inverse .site-content__inner {
+  background-color: #08080e !important;
+}
+
+/* ── Ad unit styling ── */
+.ds-ad-unit { margin: 24px 0; text-align: center; overflow: hidden; }
+.ds-ad-unit--horizontal { padding: 12px 0; }
+.ds-ad-unit--vertical { padding: 12px 0; }
+.ds-ad-unit--in-article { margin: 32px 0; }
+.ds-ad-unit--in-feed { margin: 16px 0; }
+.ds-ad-unit--multiplex { margin: 32px 0; }
 
 /* ── Kill every Bootstrap / theme white background ── */
 .site-content--product-single,
