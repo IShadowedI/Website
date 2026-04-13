@@ -2,7 +2,7 @@
  * Tabletop Gaming News Aggregator
  * 
  * Fetches RSS feeds from tabletop gaming news sources and generates
- * static blog pages for the Necromancers site.
+ * static blog pages for the Dragon's Shadow site.
  * 
  * Usage: node scripts/fetch-news.js
  * Or:    npm run update-news
@@ -41,7 +41,7 @@ const FEEDS = [
     maxItems: 8
   },
   {
-    url: 'https://www.enworld.org/forums/dungeons-dragons-discussion/index.rss',
+    url: 'https://www.enworld.org/index.rss',
     source: 'EN World',
     category: 'D&D',
     color: 'color-danger',
@@ -367,7 +367,7 @@ async function fetchAllFeeds() {
   const parser = new RSSParser({
     timeout: 15000,
     headers: {
-      'User-Agent': 'Mozilla/5.0 (compatible; NecromancersNewsBot/1.0)',
+      'User-Agent': 'Mozilla/5.0 (compatible; DragonsShadowNewsBot/1.0)',
       'Accept': 'application/rss+xml, application/xml, text/xml, */*'
     },
     customFields: {
@@ -445,7 +445,7 @@ function generatePostPage(item, index, template) {
   const safeTitle = escapeHtml(item.title);
   
   // Update title
-  html = html.replace(/<title>.*?<\/title>/, `<title>${safeTitle} - Necromancers</title>`);
+  html = html.replace(/<title>.*?<\/title>/, `<title>${safeTitle} - Dragon's Shadow</title>`);
   html = html.replace(
     /<meta name="description" content="[^"]*">/,
     `<meta name="description" content="${escapeHtml(item.excerpt)}">`
@@ -582,7 +582,7 @@ ${postsHtml}
   }
   
   // Update page title
-  html = html.replace(/<title>.*?<\/title>/, '<title>Tabletop Gaming News - Necromancers</title>');
+  html = html.replace(/<title>.*?<\/title>/, '<title>Tabletop Gaming News - Dragon\'s Shadow</title>');
   
   return html;
 }
@@ -592,7 +592,7 @@ ${postsHtml}
 // ============================================================
 
 async function main() {
-  console.log('=== Necromancers News Aggregator ===');
+  console.log('=== Dragon\'s Shadow News Aggregator ===');
   console.log('Fetching tabletop gaming news feeds...\n');
 
   // Ensure directories exist
@@ -684,7 +684,7 @@ async function main() {
       const before = b4.substring(0, b4ContentStart);
       const after = b4.substring(b4ContentEnd);
       b4 = before + `<div class="content blog-layout--style-1">\n\n${feedPostsHtml}\n\n\t\t\t</div>` + after;
-      b4 = b4.replace(/<title>.*?<\/title>/, '<title>News Feed - Necromancers</title>');
+      b4 = b4.replace(/<title>.*?<\/title>/, '<title>News Feed - Dragon\'s Shadow</title>');
       fs.writeFileSync(path.join(BUILD, 'blog-4.html'), b4, 'utf8');
       console.log('Updated blog-4.html');
     }
@@ -703,6 +703,100 @@ async function main() {
     fs.writeFileSync(pfPath, content, 'utf8');
   }
   console.log(`Fixed paths in ${postFiles.length} post pages`);
+
+  // ── Update home.html news section ──
+  console.log('\nUpdating home.html news feed...');
+  const homePath = path.join(BUILD, 'home.html');
+  if (fs.existsSync(homePath)) {
+    let homeHtml = fs.readFileSync(homePath, 'utf8');
+    const homeArticles = items.slice(0, 7).map((item, i) => {
+      const img = item.localImage || PLACEHOLDER_IMGS[i % PLACEHOLDER_IMGS.length];
+      return `\t\t\t\t<article class="post has-post-thumbnail">
+\t\t\t\t\t<div class="post__thumbnail">
+\t\t\t\t\t\t<a href="posts/${item.slug}.html"><img src="${escapeHtml(img)}" alt="${escapeHtml(item.title)}"></a>
+\t\t\t\t\t</div>
+\t\t\t\t\t<div class="post__body">
+\t\t\t\t\t\t<div class="post__header">
+\t\t\t\t\t\t\t<ul class="post__cats list-unstyled">
+\t\t\t\t\t\t\t\t<li class="post__cats-item ${item.color}">
+\t\t\t\t\t\t\t\t\t<a href="#">${escapeHtml(item.category)}</a>
+\t\t\t\t\t\t\t\t</li>
+\t\t\t\t\t\t\t</ul>
+\t\t\t\t\t\t\t<h2 class="post__title h4"><a href="posts/${item.slug}.html">${escapeHtml(item.title)}</a></h2>
+\t\t\t\t\t\t\t<ul class="post__meta list-unstyled">
+\t\t\t\t\t\t\t\t<li class="post__meta-item post__meta-item--date">
+\t\t\t\t\t\t\t\t\t<a href="#">${item.dateFormatted}</a>
+\t\t\t\t\t\t\t\t</li>
+\t\t\t\t\t\t\t</ul>
+\t\t\t\t\t\t</div>
+\t\t\t\t\t\t<div class="post__excerpt">${escapeHtml(item.excerpt)}</div>
+\t\t\t\t\t</div>
+\t\t\t\t</article>`;
+    }).join('\n\n');
+
+    // Replace content inside #rss-feed-container
+    const rssStart = homeHtml.indexOf('<div id="rss-feed-container">');
+    if (rssStart !== -1) {
+      const rssEnd = homeHtml.indexOf('</div>', homeHtml.indexOf('</article>', rssStart + 100));
+      // Find the closing </div> that matches rss-feed-container (after all articles)
+      // Safer: find the pattern </div>\n\t\t\t</div> which closes rss-feed-container + content
+      const rssContainerClose = homeHtml.indexOf('\n\t\t\t</div>\n\t\t\t</div>', rssStart);
+      if (rssContainerClose !== -1) {
+        const before = homeHtml.substring(0, rssStart);
+        const after = homeHtml.substring(rssContainerClose);
+        homeHtml = before + `<div id="rss-feed-container">\n\n${homeArticles}\n\n\t\t\t\t</div>` + after;
+        fs.writeFileSync(homePath, homeHtml, 'utf8');
+        console.log('Updated home.html news section');
+      }
+    }
+  }
+
+  // ── Update blog-classic.html ──
+  console.log('Updating blog-classic.html...');
+  const classicPath = path.join(BUILD, 'blog-classic.html');
+  if (fs.existsSync(classicPath)) {
+    let classicHtml = fs.readFileSync(classicPath, 'utf8');
+    const classicArticles = items.slice(0, 10).map((item, i) => {
+      const img = item.localImage || PLACEHOLDER_IMGS[i % PLACEHOLDER_IMGS.length];
+      return `\t\t\t\t\t\t\t<article class="post has-post-thumbnail">
+\t\t\t\t\t\t\t\t<div class="post__thumbnail">
+\t\t\t\t\t\t\t\t\t<a href="posts/${item.slug}.html">
+\t\t\t\t\t\t\t\t\t\t<img src="${escapeHtml(img)}" alt="${escapeHtml(item.title)}">
+\t\t\t\t\t\t\t\t\t</a>
+\t\t\t\t\t\t\t\t</div>
+\t\t\t\t\t\t\t\t<div class="post__body">
+\t\t\t\t\t\t\t\t\t<div class="post__header">
+\t\t\t\t\t\t\t\t\t\t<ul class="post__cats list-unstyled">
+\t\t\t\t\t\t\t\t\t\t\t<li class="post__cats-item ${item.color}">
+\t\t\t\t\t\t\t\t\t\t\t\t<a href="#">${escapeHtml(item.category)}</a>
+\t\t\t\t\t\t\t\t\t\t\t</li>
+\t\t\t\t\t\t\t\t\t\t</ul>
+\t\t\t\t\t\t\t\t\t\t<h2 class="post__title h4">
+\t\t\t\t\t\t\t\t\t\t\t<a href="posts/${item.slug}.html">${escapeHtml(item.title)}</a>
+\t\t\t\t\t\t\t\t\t\t</h2>
+\t\t\t\t\t\t\t\t\t\t<ul class="post__meta list-unstyled">
+\t\t\t\t\t\t\t\t\t\t\t<li class="post__meta-item post__meta-item--date">${item.dateFormatted}</li>
+\t\t\t\t\t\t\t\t\t\t\t<li class="post__meta-item">via ${escapeHtml(item.source)}</li>
+\t\t\t\t\t\t\t\t\t\t</ul>
+\t\t\t\t\t\t\t\t\t</div>
+\t\t\t\t\t\t\t\t\t<div class="post__excerpt">
+\t\t\t\t\t\t\t\t\t\t${escapeHtml(item.excerpt)}
+\t\t\t\t\t\t\t\t\t</div>
+\t\t\t\t\t\t\t\t</div>
+\t\t\t\t\t\t\t</article>`;
+    }).join('\n\n');
+
+    // Replace articles between first <article> and the pagination nav
+    const firstArticle = classicHtml.indexOf('<article class="post has-post-thumbnail">');
+    const paginationNav = classicHtml.indexOf('<nav class="navigation pagination"');
+    if (firstArticle !== -1 && paginationNav !== -1) {
+      const before = classicHtml.substring(0, firstArticle);
+      const after = classicHtml.substring(paginationNav);
+      classicHtml = before + classicArticles + '\n\n\t\t\t\t\t\t\t' + after;
+      fs.writeFileSync(classicPath, classicHtml, 'utf8');
+      console.log('Updated blog-classic.html');
+    }
+  }
 
   console.log('\n=== Done! ===');
   console.log(`  ${generated} post pages generated`);

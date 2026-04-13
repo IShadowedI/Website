@@ -1382,3 +1382,26 @@ article.post-grid,
 .header-filter-toggle:hover .df-icon {
   fill: var(--accent-light) !important;
 }
+
+/* ── Nav visibility fix: show nav at 992px instead of 1200px ── */
+@media (min-width: 992px) {
+  .main-nav {
+    display: block !important;
+  }
+  .main-nav__list > li {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .main-nav__list > li > a {
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 1200px) {
+  .main-nav__list > li {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  .main-nav__list > li > a {
+    font-size: 0.875rem;
+  }
+}
