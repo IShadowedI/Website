@@ -449,6 +449,25 @@ textarea.tool-input {
 .ds-ad-unit--in-feed { margin: 16px 0; }
 .ds-ad-unit--multiplex { margin: 32px 0; }
 
+/* ── Comment styling: white text on dark bg ── */
+.post-comments__title,
+.comment__author,
+.comment__body,
+.comment__body p,
+.comment__content,
+.comment__date,
+.comment__reply a,
+.post-comments-form__title,
+.ncr-comment__body,
+.ncr-comment__content,
+.ncr-comment__title {
+  color: #fff !important;
+}
+.comment__date,
+.comment__meta {
+  color: rgba(255,255,255,0.5) !important;
+}
+
 /* ── Kill every Bootstrap / theme white background ── */
 .site-content--product-single,
 .site-content.login-page .row > *:nth-child(odd),

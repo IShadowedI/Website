@@ -9,6 +9,7 @@
  */
 
 const RSSParser = require('rss-parser');
+const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -360,6 +361,150 @@ async function localizeBodyImages(items) {
 }
 
 // ============================================================
+// Full article scraping + comment extraction
+// ============================================================
+
+/**
+ * Fetch a page's HTML content via HTTP(S).
+ */
+function fetchPage(url) {
+  return new Promise((resolve) => {
+    let parsedUrl;
+    try { parsedUrl = new URL(url); } catch { return resolve(null); }
+
+    const client = parsedUrl.protocol === 'https:' ? https : http;
+    const req = client.get(url, {
+      timeout: 15000,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,*/*',
+      }
+    }, (res) => {
+      if ([301, 302, 303, 307, 308].includes(res.statusCode) && res.headers.location) {
+        res.resume();
+        return fetchPage(res.headers.location).then(resolve);
+      }
+      if (res.statusCode !== 200) { res.resume(); return resolve(null); }
+
+      const chunks = [];
+      res.on('data', c => chunks.push(c));
+      res.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+      res.on('error', () => resolve(null));
+    });
+    req.on('error', () => resolve(null));
+    req.on('timeout', () => { req.destroy(); resolve(null); });
+  });
+}
+
+/**
+ * Scrape the full article body from a page URL using cheerio.
+ * Returns { fullContent, comments[] } or null.
+ */
+async function scrapeArticle(url, source) {
+  const html = await fetchPage(url);
+  if (!html) return null;
+
+  const $ = cheerio.load(html);
+
+  // Remove unwanted elements
+  $('script, style, nav, header, footer, .sidebar, .related-posts, .share-buttons, .social-share, .newsletter-signup, .ad, .advertisement, [class*="adsbygoogle"], .wp-block-embed').remove();
+
+  let articleHtml = '';
+
+  // Source-specific selectors for article content
+  const contentSelectors = [
+    'article .entry-content',           // WordPress standard
+    '.post-content',                     // Common blog
+    '.article-content',                  // News sites
+    '.entry-content',                    // WordPress
+    'article .content',                  // Generic
+    '.post__content',                    // Some themes
+    '.article__body',                    // News
+    '.article-body',                     // News
+    '[itemprop="articleBody"]',          // Schema.org
+    '.single-post-content',             // WordPress
+    '.td-post-content',                 // Flavor theme
+    '.c-entry-content',                 // Vox Media
+    'article',                          // Fallback
+  ];
+
+  for (const sel of contentSelectors) {
+    const el = $(sel).first();
+    if (el.length && el.text().trim().length > 100) {
+      // Clean up the content
+      el.find('.social-share, .author-bio, .related, .tags, .comments-link, .navigation, .wp-block-buttons, .sharedaddy').remove();
+      articleHtml = el.html();
+      break;
+    }
+  }
+
+  if (!articleHtml || articleHtml.length < 50) return null;
+
+  // Extract comments
+  const comments = [];
+  const commentSelectors = [
+    '.comment-list > .comment, .comment-list > li',
+    '#comments .comment',
+    '.comments .comment',
+    '.comment-body',
+    '#disqus_thread .post',
+  ];
+
+  for (const sel of commentSelectors) {
+    $(sel).slice(0, 5).each((i, el) => {
+      const $el = $(el);
+      const author = $el.find('.comment-author, .fn, .comment__author, .author-name').first().text().trim();
+      const text = $el.find('.comment-content, .comment-text, .comment-body p, .comment__body p').first().text().trim();
+      const date = $el.find('.comment-date, time, .comment-meta time, .comment__date').first().text().trim();
+
+      if (author && text && text.length > 10) {
+        comments.push({
+          author: author.substring(0, 50),
+          text: text.substring(0, 300),
+          date: date || ''
+        });
+      }
+    });
+    if (comments.length > 0) break;
+  }
+
+  return {
+    fullContent: sanitizeContent(articleHtml),
+    comments: comments.slice(0, 3)  // Max 3 top comments
+  };
+}
+
+/**
+ * Scrape full articles for all items, replacing RSS excerpts with full content.
+ */
+async function scrapeFullArticles(items) {
+  console.log(`\nScraping full articles for ${items.length} items...`);
+  let scraped = 0, withComments = 0, failed = 0;
+
+  for (let i = 0; i < items.length; i += MAX_CONCURRENT_DOWNLOADS) {
+    const batch = items.slice(i, i + MAX_CONCURRENT_DOWNLOADS);
+    await Promise.all(batch.map(async (item) => {
+      try {
+        const result = await scrapeArticle(item.link, item.source);
+        if (result && result.fullContent && result.fullContent.length > item.content.length) {
+          item.content = result.fullContent;
+          item.excerpt = extractExcerpt(result.fullContent);
+          scraped++;
+          if (result.comments.length > 0) {
+            item.comments = result.comments;
+            withComments++;
+          }
+        }
+      } catch (err) {
+        failed++;
+      }
+    }));
+  }
+
+  console.log(`  Scraped: ${scraped}, With comments: ${withComments}, Failed/shorter: ${failed}`);
+}
+
+// ============================================================
 // Feed fetching
 // ============================================================
 
@@ -490,13 +635,29 @@ function generatePostPage(item, index, template) {
     html = before + articleHtml + after;
   }
   
-  // Remove comments section (aggregated posts don't have local comments)
-  const commentsStart = html.indexOf('<!-- Post Comments -->');
-  const commentsFormEnd = html.indexOf('</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</main>');
-  if (commentsStart !== -1 && commentsFormEnd !== -1) {
-    const beforeComments = html.substring(0, commentsStart);
-    const afterComments = html.substring(commentsFormEnd);
-    html = beforeComments + afterComments;
+  // Insert comments if we scraped any from the source
+  const commentsPlaceholder = html.indexOf('<!-- COMMENTS_PLACEHOLDER -->');
+  if (commentsPlaceholder !== -1) {
+    let commentsHtml = '';
+    if (item.comments && item.comments.length > 0) {
+      const commentItems = item.comments.map(c => `
+							<li class="comment">
+								<div class="comment__body">
+									<h6 class="comment__author">${escapeHtml(c.author)}</h6>
+									<p>${escapeHtml(c.text)}</p>
+									<div class="comment__meta">
+										<time class="comment__date">${escapeHtml(c.date)}</time>
+									</div>
+								</div>
+							</li>`).join('');
+      commentsHtml = `
+					<div class="post-comments" id="comments">
+						<h4 class="post-comments__title">Top Comments (${item.comments.length})</h4>
+						<ol class="comments">${commentItems}
+						</ol>
+					</div>`;
+    }
+    html = html.replace('<!-- COMMENTS_PLACEHOLDER -->', commentsHtml);
   }
   
   return html;
@@ -610,6 +771,9 @@ async function main() {
 
   // Download article images locally
   await downloadImagesForItems(items);
+
+  // Scrape full article content and comments from source pages
+  await scrapeFullArticles(items);
 
   // Download and localize images embedded in article body HTML
   await localizeBodyImages(items);
