@@ -271,20 +271,163 @@
 				</div>
 			</div>
 
-			<!-- Homepage Hub -->
-			<div class="home-hub" style="padding:0 15px;">
-				<div class="home-hub__panel">
-					<div class="home-hub__icon"><img src="assets/img/dragon/app/DragonCircleLogo.png" alt="Dragon's Den" style="width:64px;height:64px;"></div>
-					<h2 class="home-hub__title">Welcome to the Den</h2>
-					<p class="home-hub__desc">Your hub for tabletop tools, digital resources, creator content, and community — all in one place.</p>
-					<div class="home-hub__links">
-						<a href="tools.html" class="home-hub__link"><span class="home-hub__link-icon"><img src="assets/img/dragon/app/anvil.png" class="quick-access-icon-img" alt=""></span> Tool Suite</a>
-						<a href="shop.html" class="home-hub__link"><span class="home-hub__link-icon"><img src="assets/img/dragon/app/coin.png" class="quick-access-icon-img" alt=""></span> Shop</a>
-						<a href="news.html" class="home-hub__link"><span class="home-hub__link-icon"><img src="assets/img/dragon/app/announcement.png" class="quick-access-icon-img" alt=""></span> News</a>
-						<a href="plugins.html" class="home-hub__link"><span class="home-hub__link-icon"><img src="assets/img/dragon/app/spellbook.png" class="quick-access-icon-img" alt=""></span> Plugins</a>
+			<!-- ── Homepage Content Panels ── -->
+			<div class="home-panels">
+
+				<!-- Panel 1: Welcome + Stats -->
+				<div class="home-panel home-panel--welcome">
+					<div class="home-panel__inner">
+						<div class="home-panel__header">
+							<img src="assets/img/dragon/app/DragonCircleLogo.png" alt="Dragon's Den" class="home-panel__logo">
+							<h2 class="home-panel__title">Welcome to the Den</h2>
+							<p class="home-panel__desc">Your hub for tabletop tools, digital resources, creator content, and community.</p>
+						</div>
+
+						<!-- Quick Links -->
+						<div class="home-panel__nav">
+							<a href="tools.html" class="home-panel__nav-card">
+								<span class="home-panel__nav-icon"><img src="assets/img/dragon/app/anvil.png" class="quick-access-icon-img" alt=""></span>
+								<span class="home-panel__nav-label">Tool Suite</span>
+								<span class="home-panel__nav-sub">28 Free Utilities</span>
+							</a>
+							<a href="shop.html" class="home-panel__nav-card">
+								<span class="home-panel__nav-icon"><img src="assets/img/dragon/app/coin.png" class="quick-access-icon-img" alt=""></span>
+								<span class="home-panel__nav-label">Creator Shop</span>
+								<span class="home-panel__nav-sub">Maps &amp; Assets</span>
+							</a>
+							<a href="news.html" class="home-panel__nav-card">
+								<span class="home-panel__nav-icon"><img src="assets/img/dragon/app/announcement.png" class="quick-access-icon-img" alt=""></span>
+								<span class="home-panel__nav-label">News Feed</span>
+								<span class="home-panel__nav-sub">Updated Daily</span>
+							</a>
+							<a href="plugins.html" class="home-panel__nav-card">
+								<span class="home-panel__nav-icon"><img src="assets/img/dragon/app/spellbook.png" class="quick-access-icon-img" alt=""></span>
+								<span class="home-panel__nav-label">API &amp; Plugins</span>
+								<span class="home-panel__nav-sub">Build &amp; Extend</span>
+							</a>
+						</div>
+
+						<!-- Stats -->
+						<div class="home-panel__stats">
+							<div class="player-info-detail player-info-detail--value">
+								<div class="player-info-detail__value h3">28</div>
+								<div class="player-info-detail__body">
+									<div class="player-info-detail__label">Free</div>
+									<div class="player-info-detail__title">Tools</div>
+								</div>
+							</div>
+							<div class="player-info-detail player-info-detail--value">
+								<div class="player-info-detail__value h3">90+</div>
+								<div class="player-info-detail__body">
+									<div class="player-info-detail__label">Curated</div>
+									<div class="player-info-detail__title">Articles</div>
+								</div>
+							</div>
+							<div class="player-info-detail player-info-detail--value">
+								<div class="player-info-detail__value h3">6</div>
+								<div class="player-info-detail__body">
+									<div class="player-info-detail__label">RSS</div>
+									<div class="player-info-detail__title">Sources</div>
+								</div>
+							</div>
+							<div class="player-info-detail player-info-detail--value">
+								<div class="player-info-detail__value h3">∞</div>
+								<div class="player-info-detail__body">
+									<div class="player-info-detail__label">Community</div>
+									<div class="player-info-detail__title">Driven</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
+
+				<!-- Panel 2: Featured Sections + Social -->
+				<div class="home-panel home-panel--features">
+					<div class="home-panel__inner">
+						<h3 class="home-panel__section-title">Explore the Den</h3>
+
+						<!-- Feature Cards Grid -->
+						<div class="home-feature-grid">
+							<a href="tools.html" class="home-feature-card">
+								<div class="home-feature-card__img" style="background-image:url('assets/img/samples/news-v1-post-img-02.jpg')"></div>
+								<div class="home-feature-card__body">
+									<h4 class="home-feature-card__title">Tool Suite</h4>
+									<p class="home-feature-card__desc">JSON formatter, regex tester, QR generator, dice roller, and 24 more free browser-based utilities.</p>
+								</div>
+							</a>
+							<a href="shop.html" class="home-feature-card">
+								<div class="home-feature-card__img" style="background-image:url('assets/img/samples/news-v1-post-img-03.jpg')"></div>
+								<div class="home-feature-card__body">
+									<h4 class="home-feature-card__title">Creator Shop</h4>
+									<p class="home-feature-card__desc">Battle maps, OBS overlays, token packs, and digital resources for your tabletop sessions.</p>
+								</div>
+							</a>
+							<a href="news.html" class="home-feature-card">
+								<div class="home-feature-card__img" style="background-image:url('assets/img/samples/news-v1-post-img-04.jpg')"></div>
+								<div class="home-feature-card__body">
+									<h4 class="home-feature-card__title">News &amp; Articles</h4>
+									<p class="home-feature-card__desc">Aggregated coverage from Wargamer, Bell of Lost Souls, and more — updated every day.</p>
+								</div>
+							</a>
+							<a href="invoice.html" class="home-feature-card">
+								<div class="home-feature-card__img" style="background-image:url('assets/img/samples/news-v1-post-img-05.jpg')"></div>
+								<div class="home-feature-card__body">
+									<h4 class="home-feature-card__title">Invoice Generator</h4>
+									<p class="home-feature-card__desc">Create professional PDF invoices for commissions and freelance work — fast and free.</p>
+								</div>
+							</a>
+						</div>
+
+						<!-- Social Links with Glitch Effect -->
+						<div class="home-panel__social">
+							<h3 class="home-panel__section-title">Connect With Us</h3>
+							<ul class="social-menu social-menu--landing social-menu--landing-glitch">
+								<li>
+									<a href="https://discord.gg/" target="_blank" rel="noopener">
+										<i class="fab fa-discord"></i>
+										<span class="link-subtitle">Discord</span>Community
+									</a>
+								</li>
+								<li>
+									<a href="https://twitter.com/" target="_blank" rel="noopener">
+										<i class="fab fa-twitter"></i>
+										<span class="link-subtitle">Twitter</span>Updates
+									</a>
+								</li>
+								<li>
+									<a href="https://youtube.com/" target="_blank" rel="noopener">
+										<i class="fab fa-youtube"></i>
+										<span class="link-subtitle">YouTube</span>Videos
+									</a>
+								</li>
+								<li>
+									<a href="https://github.com/IShadowedI" target="_blank" rel="noopener">
+										<i class="fab fa-github"></i>
+										<span class="link-subtitle">GitHub</span>Open Source
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<!-- Partners -->
+						<section class="widget widget-partners-carousel home-panel__partners">
+							<h5 class="widget__title">Powered By</h5>
+							<div class="widget__content">
+								<ul>
+									<li><img src="assets/img/samples/partner-carousel-img-01.png" alt="Partner"></li>
+									<li><img src="assets/img/samples/partner-carousel-img-02.png" alt="Partner"></li>
+									<li><img src="assets/img/samples/partner-carousel-img-03.png" alt="Partner"></li>
+									<li><img src="assets/img/samples/partner-carousel-img-01.png" alt="Partner"></li>
+									<li><img src="assets/img/samples/partner-carousel-img-02.png" alt="Partner"></li>
+									<li><img src="assets/img/samples/partner-carousel-img-03.png" alt="Partner"></li>
+								</ul>
+							</div>
+						</section>
+					</div>
+				</div>
+
 			</div>
+			<!-- Homepage Content Panels / End -->
 
 		</main>
 
