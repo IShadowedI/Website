@@ -41,8 +41,8 @@ const FEEDS = [
     maxItems: 8
   },
   {
-    url: 'https://www.enworld.org/index.rss',
-    source: 'EN World',
+    url: 'https://www.dndbeyond.com/posts/rss',
+    source: 'D&D Beyond',
     category: 'D&D',
     color: 'color-danger',
     maxItems: 8
