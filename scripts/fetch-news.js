@@ -210,9 +210,34 @@ function sanitizeContent(html) {
     .replace(/\bon\w+\s*=\s*["'][^"']*["']/gi, '')  // Remove event handlers
     .replace(/javascript:/gi, '')  // Remove javascript: URIs
     .replace(/<form[^>]*>[\s\S]*?<\/form>/gi, '');  // Remove forms
-  
-  // Wrap bare text blocks in <p> if needed
-  // Keep existing <p>, <h2-h6>, <figure>, <img>, <ul>, <ol>, <blockquote>, <a>
+
+  // ── Strip advertisement text and ad containers ──
+  clean = clean
+    .replace(/<div[^>]*class="[^"]*(?:ad-unit|adsbygoogle|advertisement|sponsor|promoted)[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+    .replace(/<ins[^>]*class="[^"]*adsbygoogle[^"]*"[^>]*>[\s\S]*?<\/ins>/gi, '')
+    .replace(/<span[^>]*>[\s]*Advertisement[\s]*<\/span>/gi, '')
+    .replace(/\s*Advertisement\s*(?=<|$)/gi, '')
+    .replace(/<aside[^>]*>[\s\S]*?<\/aside>/gi, '');  // Remove sidebars
+
+  // ── Strip author bio sections ──
+  clean = clean
+    .replace(/<div[^>]*class="[^"]*(?:author-bio|author-info|author-box|about-author|writer-info)[^"]*"[^>]*>[\s\S]*?<\/div>\s*<\/div>/gi, '')
+    .replace(/<section[^>]*class="[^"]*author[^"]*"[^>]*>[\s\S]*?<\/section>/gi, '');
+
+  // ── Strip "Don't Miss" / related article sections ──
+  clean = clean
+    .replace(/<div[^>]*class="[^"]*(?:related-posts|recommended|dont-miss|read-next)[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+    .replace(/Don[''\u2019]t Miss:[\s\S]*?(?=<\/div>|<\/article>|$)/gi, '');
+
+  // ── Strip hardcoded width/height on images (cause stretching) ──
+  clean = clean.replace(/<img([^>]*)\s+width=["']\d+["']([^>]*?)>/gi, '<img$1$2>')
+               .replace(/<img([^>]*)\s+height=["']\d+["']([^>]*?)>/gi, '<img$1$2>')
+               .replace(/<img([^>]*)\s+width=["']\d+["']([^>]*?)>/gi, '<img$1$2>')
+               .replace(/<img([^>]*)\s+height=["']\d+["']([^>]*?)>/gi, '<img$1$2>');
+
+  // ── Remove srcset (causes mixed local/external loading) ──
+  clean = clean.replace(/\s+srcset=["'][^"']*["']/gi, '');
+
   return clean.trim();
 }
 
@@ -495,6 +520,16 @@ async function scrapeArticle(url, source) {
 
   // Remove unwanted elements
   $('script, style, nav, header, footer, .sidebar, .related-posts, .share-buttons, .social-share, .newsletter-signup, .ad, .advertisement, [class*="adsbygoogle"], .wp-block-embed').remove();
+  // Remove ad containers, sponsorships, and promo blocks
+  $('[class*="ad-unit"], [class*="ad_unit"], [class*="sponsor"], [class*="promoted"], [id*="google_ads"], [id*="div-gpt-ad"], ins.adsbygoogle').remove();
+  // Remove author bios / about-author sections
+  $('[class*="author-bio"], [class*="author-info"], [class*="author-box"], [class*="about-author"], [class*="writer-info"]').remove();
+  // Remove "Don't Miss" and related content sections
+  $('[class*="related-posts"], [class*="dont-miss"], [class*="read-next"], [class*="recommended"], [class*="more-stories"]').remove();
+  // Remove comment sections from scraped content (we have our own)
+  $('#comments, #disqus_thread, [class*="comment-section"], .comments-area').remove();
+  // Remove share/social blocks duplicated in content
+  $('[class*="sharedaddy"], [class*="share-buttons"], [class*="social-share"]').remove();
 
   let articleHtml = '';
 
@@ -520,6 +555,19 @@ async function scrapeArticle(url, source) {
     if (el.length && el.text().trim().length > 100) {
       // Clean up the content
       el.find('.social-share, .author-bio, .related, .tags, .comments-link, .navigation, .wp-block-buttons, .sharedaddy').remove();
+      // Remove ad elements within the selected content
+      el.find('[class*="ad-unit"], [class*="adsbygoogle"], ins.adsbygoogle, [class*="sponsor"], [class*="promoted"]').remove();
+      // Remove author bio boxes that may be inside the content
+      el.find('[class*="author-bio"], [class*="author-box"], [class*="about-author"], [class*="writer-info"]').remove();
+      // Remove "Don't Miss" and related article links at bottom
+      el.find('[class*="dont-miss"], [class*="related-posts"], [class*="read-next"]').remove();
+      // Strip width/height from images to prevent stretching
+      el.find('img').each((_, img) => {
+        const $img = $(img);
+        $img.removeAttr('width');
+        $img.removeAttr('height');
+        $img.removeAttr('srcset');
+      });
       articleHtml = el.html();
       break;
     }
@@ -1002,8 +1050,36 @@ async function main() {
   // Download and localize images embedded in article body HTML
   await localizeBodyImages(items);
 
+  // ── Filter out articles that failed to scrape properly ──
+  const TEMPLATE_FILLER = [
+    'Pushing the boundaries of competitive gaming',
+    'every Dragon\'s Den player has the resources',
+    'every Dragon\'s Shadow player has the resources',
+    'Our dedication to excellence drives everything we do',
+    'From practice to competition, every member is committed',
+  ];
+  const MIN_CONTENT_LENGTH = 200;
+
+  const validItems = items.filter(item => {
+    const plainText = stripHtml(item.content);
+    // Reject articles with very short scraped content
+    if (plainText.length < MIN_CONTENT_LENGTH) {
+      console.log(`  [SKIP] Too short (${plainText.length} chars): ${item.title}`);
+      return false;
+    }
+    // Reject articles that still contain template filler
+    for (const phrase of TEMPLATE_FILLER) {
+      if (item.content.includes(phrase)) {
+        console.log(`  [SKIP] Template filler detected: ${item.title}`);
+        return false;
+      }
+    }
+    return true;
+  });
+  console.log(`\nFiltered: ${items.length} → ${validItems.length} valid articles (${items.length - validItems.length} removed)`);
+
   // Save data for reference
-  fs.writeFileSync(DATA_FILE, JSON.stringify(items, null, 2), 'utf8');
+  fs.writeFileSync(DATA_FILE, JSON.stringify(validItems, null, 2), 'utf8');
   console.log(`Saved article data to news-data.json`);
 
   // Load templates
@@ -1013,8 +1089,8 @@ async function main() {
   // Generate individual post pages
   console.log('\nGenerating post pages...');
   let generated = 0;
-  for (let i = 0; i < Math.min(items.length, 60); i++) {
-    const item = items[i];
+  for (let i = 0; i < Math.min(validItems.length, 60); i++) {
+    const item = validItems[i];
     const postHtml = generatePostPage(item, i, postTemplate);
     const filename = `${item.slug}.html`;
     
@@ -1030,7 +1106,7 @@ async function main() {
 
   // Regenerate blog listing pages
   console.log('\nUpdating blog listing (blog-1.html)...');
-  const listingHtml = generateBlogListing(items, listTemplate);
+  const listingHtml = generateBlogListing(validItems, listTemplate);
   fs.writeFileSync(path.join(BUILD, 'blog-1.html'), listingHtml, 'utf8');
   console.log('Updated blog-1.html');
 
@@ -1038,7 +1114,7 @@ async function main() {
   if (fs.existsSync(path.join(BUILD, 'blog-4.html'))) {
     const blog4Template = fs.readFileSync(path.join(BUILD, 'blog-4.html'), 'utf8');
     // blog-4 may have a different layout, replace just the articles
-    const feedPostsHtml = items.slice(0, 15).map((item, i) => {
+    const feedPostsHtml = validItems.slice(0, 15).map((item, i) => {
       const img = item.localImage || PLACEHOLDER_IMGS[i % PLACEHOLDER_IMGS.length];
       return `			<article class="post has-post-thumbnail ">
 				<div class="post__thumbnail">
@@ -1097,7 +1173,7 @@ async function main() {
   const homePath = path.join(BUILD, 'home.html');
   if (fs.existsSync(homePath)) {
     let homeHtml = fs.readFileSync(homePath, 'utf8');
-    const homeArticles = items.slice(0, 7).map((item, i) => {
+    const homeArticles = validItems.slice(0, 7).map((item, i) => {
       const img = item.localImage || PLACEHOLDER_IMGS[i % PLACEHOLDER_IMGS.length];
       return `\t\t\t\t<article class="post has-post-thumbnail">
 \t\t\t\t\t<div class="post__thumbnail">
@@ -1145,11 +1221,11 @@ async function main() {
   if (fs.existsSync(newsPath)) {
     const newsTemplate = fs.readFileSync(newsPath, 'utf8');
     const ITEMS_PER_PAGE = 10;
-    const totalPages = Math.ceil(Math.min(items.length, 60) / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(Math.min(validItems.length, 60) / ITEMS_PER_PAGE);
 
     for (let page = 1; page <= totalPages; page++) {
       const startIdx = (page - 1) * ITEMS_PER_PAGE;
-      const pageItems = items.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+      const pageItems = validItems.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
       let newsHtml = newsTemplate;
 
@@ -1180,7 +1256,7 @@ async function main() {
       }
 
       // ─── Latest Posts sidebar (3 items, offset from hero) ───
-      const latestItems = page === 1 ? items.slice(1, 4) : items.slice(0, 3);
+      const latestItems = page === 1 ? validItems.slice(1, 4) : validItems.slice(0, 3);
       const latestHtml = latestItems.map(it => {
         const img = it.localImage || PLACEHOLDER_IMGS[0];
         return `          <div class="news-sidebar-post">
@@ -1205,7 +1281,7 @@ ${latestHtml}
       }
 
       // ─── Most Popular Posts sidebar (5 items) ───
-      const popularItems = items.slice(4, 9);
+      const popularItems = validItems.slice(4, 9);
       const popularHtml = popularItems.map((it, i) => {
         return `          <div class="news-popular-post">
             <span class="news-popular-post__num">${i + 1}</span>
@@ -1227,8 +1303,45 @@ ${popularHtml}
         newsHtml = newsHtml.substring(0, mpStart) + mpInner + '\n      </div>\n      <!-- Right Sidebar / End -->' + newsHtml.substring(mpEnd + '</div>\n      </div>\n      <!-- Right Sidebar / End -->'.length);
       }
 
-      // ─── News feed cards (remaining items on the page, skip hero) ───
-      const feedItems = pageItems.slice(1);
+      // ─── Sub-featured articles (2 smaller cards below hero) ───
+      const subFeaturedItems = pageItems.slice(1, 3);
+      if (subFeaturedItems.length >= 2) {
+        const subFeaturedHtml = `    <div class="news-sub-featured" id="news-sub-featured">
+${subFeaturedItems.map(it => {
+  const img = it.localImage || PLACEHOLDER_IMGS[0];
+  return `      <div class="news-sub-featured__card">
+        <a href="posts/${it.slug}.html">
+          <img src="${escapeHtml(img)}" alt="${escapeHtml(it.title)}">
+          <div class="news-sub-featured__overlay">
+            <span class="news-sub-featured__cat">${escapeHtml(it.category)}</span>
+            <h3 class="news-sub-featured__title">${escapeHtml(it.title)}</h3>
+            <div class="news-sub-featured__meta">${it.dateFormatted}</div>
+          </div>
+        </a>
+      </div>`;
+}).join('\n')}
+    </div>`;
+
+        // Insert or replace sub-featured section
+        const sfStart = newsHtml.indexOf('<div class="news-sub-featured"');
+        const sfEndTag = '</div>\n\n    <!-- News Feed';
+        if (sfStart !== -1) {
+          const sfEnd = newsHtml.indexOf(sfEndTag, sfStart);
+          if (sfEnd !== -1) {
+            newsHtml = newsHtml.substring(0, sfStart) + subFeaturedHtml.trim() + '\n\n    <!-- News Feed' + newsHtml.substring(sfEnd + sfEndTag.length);
+          }
+        } else {
+          // Insert before news feed
+          const feedMarker = '    <!-- News Feed -->';
+          const fmIdx = newsHtml.indexOf(feedMarker);
+          if (fmIdx !== -1) {
+            newsHtml = newsHtml.substring(0, fmIdx) + subFeaturedHtml + '\n\n' + feedMarker + newsHtml.substring(fmIdx + feedMarker.length);
+          }
+        }
+      }
+
+      // ─── News feed cards (remaining items on the page, skip hero + sub-featured) ───
+      const feedItems = pageItems.slice(3);
       const feedHtml = feedItems.map(it => {
         const img = it.localImage || PLACEHOLDER_IMGS[0];
         return `      <div class="news-feed-card">
