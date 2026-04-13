@@ -140,7 +140,7 @@
   overflow: hidden; background: var(--dg-bg);
 }
 .dg-hero__inner {
-  position: relative; z-index: 10;
+  position: relative; z-index: 10; width: 100%;
   text-align: center; padding: 24px; max-width: 1024px; margin: 0 auto;
 }
 .dg-hero__support {
@@ -164,7 +164,7 @@
   letter-spacing: 0.3em; text-transform: uppercase;
   color: rgba(252,165,165,0.7);
 }
-.dg-hero__desc {
+.dragon-page .dg-hero__desc {
   max-width: 560px; margin: 0 auto 40px;
   font-size: 18px; color: var(--dg-text-muted);
   font-weight: 300; line-height: 1.7;
@@ -240,7 +240,7 @@
 .dg-section__title {
   font-size: 36px; color: #fff; letter-spacing: -0.025em; margin-bottom: 16px;
 }
-.dg-section__subtitle {
+.dragon-page .dg-section__subtitle {
   color: var(--dg-text-muted); font-size: 18px; font-weight: 300;
   max-width: 512px; margin: 0 auto;
 }
@@ -320,7 +320,7 @@
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.dg-cta__desc { color: var(--dg-text-muted); font-size: 18px; font-weight: 300; max-width: 512px; margin: 0 auto 40px; }
+.dragon-page .dg-cta__desc { color: var(--dg-text-muted); font-size: 18px; font-weight: 300; max-width: 512px; margin: 0 auto 40px; }
 .dg-cta__buttons { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; }
 
 /* ---------- Footer ---------- */
