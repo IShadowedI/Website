@@ -717,80 +717,6 @@ article.post-grid,
   line-height: 1;
 }
 
-/* ── Homepage Panels ── */
-.home-panels {
-  display: flex;
-  height: 100%;
-}
-.home-panel {
-  width: 520px;
-  height: 100%;
-  flex-shrink: 0;
-  overflow-y: auto;
-  border-left: 1px solid rgba(255,255,255,.04);
-}
-@media (min-width: 1920px) {
-  .home-panel { width: 640px; }
-}
-.home-panel__inner {
-  padding: 30px 28px;
-}
-
-/* Info blocks (feature descriptions) */
-.info-block {
-  padding: 18px 20px;
-  background: rgba(30, 32, 36, 0.5);
-  border: 1px solid rgba(255,255,255,.06);
-  border-radius: 6px;
-  height: 100%;
-  transition: border-color .2s;
-}
-.info-block:hover {
-  border-color: rgba(139,0,0,.3);
-}
-.info-block__icon {
-  color: var(--accent-light, #FF4D4D);
-  margin-bottom: 8px;
-  width: 24px;
-  height: 24px;
-}
-.info-block__title {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  text-transform: uppercase;
-  margin: 0 0 6px;
-}
-.info-block__title a {
-  color: #fff;
-  text-decoration: none;
-}
-.info-block__title a:hover {
-  color: var(--accent-light, #FF4D4D);
-}
-.info-block__desc {
-  font-size: 13px;
-  line-height: 1.6;
-  color: rgba(255,255,255,.55);
-  margin: 0;
-}
-
-/* Post cards in home panels */
-.home-panel .post__thumbnail img {
-  width: 100%;
-  height: 150px;
-  object-fit: contain;
-}
-.home-panel .post__body {
-  padding: 14px 16px 18px;
-}
-.home-panel .post__excerpt {
-  font-size: 13px;
-  color: rgba(255,255,255,.55);
-  line-height: 1.5;
-}
-
 /* ── Section Headers (D&DB style bar) ── */
 .section-bar {
   display: flex;
@@ -1402,8 +1328,8 @@ article.post-grid,
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 10px;
-  padding-bottom: 6px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
   border-bottom: 1px solid rgba(139,0,0,0.12);
 }
 .main-nav__megamenu .mega-col__title .mega-icon {
@@ -1905,9 +1831,7 @@ article.post-grid,
   overflow: hidden;
   aspect-ratio: 53 / 30;
   background: #0e1019;
-  border-radius: 4px;
 }
-/* Secondary hero (random article) — slightly shorter */
 .news-hero--secondary {
   aspect-ratio: 21 / 9;
 }
@@ -2172,79 +2096,6 @@ article.post-grid,
   margin-top: 2px;
 }
 
-/* Sub-Featured Articles — 2 smaller cards below hero in the left column */
-.news-sub-featured {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  margin-top: 16px;
-}
-.news-sub-featured__card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  background: #0e1019;
-  aspect-ratio: 21 / 9;
-}
-.news-sub-featured__card a {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-  width: 100%;
-  height: 100%;
-}
-.news-sub-featured__card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-.news-sub-featured__card:hover img {
-  transform: scale(1.05);
-}
-.news-sub-featured__overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 16px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.85));
-}
-.news-sub-featured__cat {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent-light);
-  margin-bottom: 6px;
-}
-.news-sub-featured__title {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.3;
-  margin: 0;
-  color: #fff;
-}
-.news-sub-featured__title a {
-  color: #fff;
-  text-decoration: none;
-}
-.news-sub-featured__title a:hover {
-  color: var(--accent-light);
-}
-.news-sub-featured__meta {
-  font-size: 11px;
-  color: rgba(255,255,255,0.75);
-  margin-top: 4px;
-}
-@media (max-width: 768px) {
-  .news-sub-featured {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* News Feed — article cards below the hero */
 .news-feed {
   margin-top: 24px;
@@ -2414,26 +2265,19 @@ article.post-grid,
    Article body: prevent images from overflowing / clipping
    ============================================================ */
 .post--single .post__body img {
-  max-width: 100% !important;
-  width: auto !important;
-  height: auto !important;
+  max-width: 100%;
+  height: auto;
   display: block;
   margin: 1em 0;
-  object-fit: contain;
 }
 .post--single .post__body figure {
-  max-width: 100% !important;
+  max-width: 100%;
   margin: 1.5em 0;
   overflow: hidden;
 }
 .post--single .post__body figure img {
-  max-width: 100% !important;
-  width: auto !important;
-  height: auto !important;
-}
-.post--single .post__body .wp-block-image {
-  max-width: 100% !important;
-  overflow: hidden;
+  max-width: 100%;
+  height: auto;
 }
 .post--single .post__body {
   overflow-x: hidden;
