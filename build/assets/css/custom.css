@@ -53,6 +53,11 @@ Description: Custom overrides — Dragon-inspired dark aesthetic
   --text-muted: #a0a0b8;
 }
 
+/* ── Horizontal layout: kill vertical scrollbar ── */
+.site-layout--horizontal .site-wrapper {
+  overflow-y: hidden !important;
+}
+
 /* ── Homepage: dark post cards in horizontal blog grid ── */
 .blog-layout--style-1 .post {
   background-color: #13151e !important;
