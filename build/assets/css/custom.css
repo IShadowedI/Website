@@ -2025,6 +2025,7 @@ article.post-grid,
   display: flex;
   flex-direction: column;
   min-width: 0;
+  gap: 16px;
 }
 
 /* Hero article (53:30 aspect ratio) */
@@ -2033,6 +2034,11 @@ article.post-grid,
   overflow: hidden;
   aspect-ratio: 53 / 30;
   background: #0e1019;
+  border-radius: 4px;
+}
+/* Secondary hero (random article) — slightly shorter */
+.news-hero--secondary {
+  aspect-ratio: 21 / 9;
 }
 .news-hero__img {
   width: 100%;

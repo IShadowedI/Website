@@ -1203,41 +1203,40 @@ async function main() {
 
       // Replace the hero block
       const heroStart = newsHtml.indexOf('<div class="news-hero"');
-      const heroCloseTag = '</div>\n\n      <!-- Sub-Featured';
+      const heroCloseTag = '</div>\n\n      <!-- Random Article';
       const heroEndSafe = newsHtml.indexOf(heroCloseTag, heroStart);
       if (heroStart !== -1 && heroEndSafe !== -1) {
-        newsHtml = newsHtml.substring(0, heroStart) + heroBlock + '\n\n      <!-- Sub-Featured' + newsHtml.substring(heroEndSafe + heroCloseTag.length);
+        newsHtml = newsHtml.substring(0, heroStart) + heroBlock + '\n\n      <!-- Random Article' + newsHtml.substring(heroEndSafe + heroCloseTag.length);
       }
 
       // Helper: filter to items that have a real downloaded image (not placeholder)
       const hasRealImage = (it) => it.localImage && !it.localImage.includes('samples/');
 
-      // ─── Sub-featured articles (2 cards with real images, inside the left column) ───
-      const subFeaturedItems = pageItems.filter(hasRealImage).slice(1, 3); // skip hero
-      if (subFeaturedItems.length >= 2) {
-        const subFeaturedHtml = `<div class="news-sub-featured" id="news-sub-featured">
-${subFeaturedItems.map(it => {
-  const img = it.localImage;
-  return `      <div class="news-sub-featured__card">
-        <a href="posts/${it.slug}.html">
-          <img src="${escapeHtml(img)}" alt="${escapeHtml(it.title)}">
-          <div class="news-sub-featured__overlay">
-            <span class="news-sub-featured__cat">${escapeHtml(it.category)}</span>
-            <h3 class="news-sub-featured__title">${escapeHtml(it.title)}</h3>
-            <div class="news-sub-featured__meta">${it.dateFormatted}</div>
+      // ─── Random article hero (second hero block, random pick from valid items) ───
+      const randomCandidates = validItems.filter(it => hasRealImage(it) && it !== heroItem);
+      if (randomCandidates.length > 0) {
+        const randomItem = randomCandidates[Math.floor(Math.random() * randomCandidates.length)];
+        const randomImg = randomItem.localImage || PLACEHOLDER_IMGS[0];
+        const randomHeroHtml = `<div class="news-hero news-hero--secondary" id="news-hero-random">
+        <img class="news-hero__img" src="${escapeHtml(randomImg)}" alt="${escapeHtml(randomItem.title)}">
+        <div class="news-hero__overlay">
+          <span class="news-hero__cat">${escapeHtml(randomItem.category)}</span>
+          <h2 class="news-hero__title"><a href="posts/${randomItem.slug}.html">${escapeHtml(randomItem.title)}</a></h2>
+          <div class="news-hero__meta">
+            <span>${randomItem.dateFormatted}</span>
+            <span>&bull;</span>
+            <span>via ${escapeHtml(randomItem.source)}</span>
           </div>
-        </a>
-      </div>`;
-}).join('\n')}
+        </div>
       </div>`;
 
-        // Replace content of the sub-featured placeholder inside the left column
-        const sfStart = newsHtml.indexOf('<div class="news-sub-featured"');
-        const sfEndTag = '</div>\n\n      </div>\n      <!-- Left Column';
-        if (sfStart !== -1) {
-          const sfEnd = newsHtml.indexOf(sfEndTag, sfStart);
-          if (sfEnd !== -1) {
-            newsHtml = newsHtml.substring(0, sfStart) + subFeaturedHtml + '\n\n      </div>\n      <!-- Left Column' + newsHtml.substring(sfEnd + sfEndTag.length);
+        // Replace the random hero placeholder
+        const rhStart = newsHtml.indexOf('<div class="news-hero news-hero--secondary"');
+        const rhEndTag = '</div>\n\n      </div>\n      <!-- Left Column';
+        if (rhStart !== -1) {
+          const rhEnd = newsHtml.indexOf(rhEndTag, rhStart);
+          if (rhEnd !== -1) {
+            newsHtml = newsHtml.substring(0, rhStart) + randomHeroHtml + '\n\n      </div>\n      <!-- Left Column' + newsHtml.substring(rhEnd + rhEndTag.length);
           }
         }
       }
