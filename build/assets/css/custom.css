@@ -53,7 +53,10 @@ Description: Custom overrides — Dragon-inspired dark aesthetic
   --text-muted: #a0a0b8;
 }
 
-/* ── Horizontal layout: kill vertical scrollbar ── */
+/* ── Kill scrollbar jitter on ALL pages ── */
+html {
+  scrollbar-gutter: stable;
+}
 body.site-layout--horizontal,
 body.site-layout--horizontal.scroll-is--active {
   overflow-y: hidden !important;
@@ -67,11 +70,13 @@ body.site-layout--horizontal.scroll-is--active {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-width: 900px;
-  max-width: 1100px;
+  width: calc(100vw - 480px);
+  min-width: 600px;
+  max-width: 860px;
   height: 100%;
-  padding: 40px 60px;
+  padding: 30px 40px;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 .home-showcase__header {
   text-align: center;
@@ -94,7 +99,7 @@ body.site-layout--horizontal.scroll-is--active {
 }
 .home-showcase__cards {
   display: flex;
-  gap: 24px;
+  gap: 18px;
   flex: 1;
   min-height: 0;
 }
@@ -1507,13 +1512,13 @@ article.post-grid,
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 18px;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
   border-bottom: 1px solid rgba(139,0,0,0.12);
 }
 .main-nav__megamenu .mega-col__title .mega-icon {
