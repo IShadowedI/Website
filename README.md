@@ -1,14 +1,3 @@
-# Necromancers - eSports & Gaming Website
-
-Full-featured esports team website built from the Necromancers HTML template. Features team pages, match tracking, blog/news, streaming, and a merchandise shop.
-
-## Quick Start
-
-```bash
-cd necromancers-site
-npm run serve
-```
-
 Opens the site at **http://localhost:3001**.
 
 ## Pages
