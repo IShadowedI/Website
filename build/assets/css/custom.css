@@ -54,6 +54,10 @@ Description: Custom overrides — Dragon-inspired dark aesthetic
 }
 
 /* ── Horizontal layout: kill vertical scrollbar ── */
+body.site-layout--horizontal,
+body.site-layout--horizontal.scroll-is--active {
+  overflow-y: hidden !important;
+}
 .site-layout--horizontal .site-wrapper {
   overflow-y: hidden !important;
 }
