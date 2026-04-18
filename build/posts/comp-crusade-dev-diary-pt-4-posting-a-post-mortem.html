@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Basic Page Needs
+	================================================== -->
+	<title>Comp Crusade Dev Diary Pt 4: Posting a Post-Mortem - Dragon's Den</title>
+	<meta charset="utf-8">
+	<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="https://cdn.snipcart.com">
+	<link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Welcome back to Comp Crusade, the column wherein we update you all about our process of creating our competitive organized play pack for Trench Crusade! Last time we talked about our most recent...">
+	<meta name="author" content="Dragon's Den">
+	<meta name="keywords" content="tabletop, D&amp;D, dungeons and dragons, RPG, streaming, creator tools, Dragon's Den">
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="../assets/img/dragon/app/DragonCircleLogo.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="../assets/img/dragon/app/DragonCircleLogo.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="../assets/img/dragon/app/DragonCircleLogo.png">
+
+	<!-- Mobile Specific Metas
+	================================================== -->
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://dragonsshadow.com/blog-post.html">
+	<meta property="og:title" content="Dragon's Den — News">
+	<meta property="og:description" content="Tabletop gaming news, creator spotlights, and community updates.">
+	<meta property="og:image" content="https://dragonsshadow.com/assets/img/dragon/app/DragonCircleLogo.png">
+	<meta property="og:site_name" content="Dragon's Den">
+
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:url" content="https://dragonsshadow.com/blog-post.html">
+	<meta name="twitter:title" content="Dragon's Den — News">
+	<meta name="twitter:description" content="Tabletop gaming news, creator spotlights, and community updates.">
+	<meta name="twitter:image" content="https://dragonsshadow.com/assets/img/dragon/app/DragonCircleLogo.png">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="https://dragonsshadow.com/blog-post.html">
+
+	<!-- Google Web Fonts
+	================================================== -->
+	<link href="https://fonts.googleapis.com/css?family=Rajdhani:300,400,500,600,700" rel="stylesheet">
+
+	<!-- CSS
+	================================================== -->
+	<!-- Vendor CSS -->
+	<link href="../assets/vendor/magnific-popup/css/magnific-popup.css" rel="stylesheet">
+	<link href="../assets/vendor/slick/css/slick.css" rel="stylesheet">
+	<link href="../assets/vendor/nanoscroller/css/nanoscroller.css" rel="stylesheet">
+	<link href="../assets/vendor/fontawesome/css/brands.css" rel="stylesheet">
+
+	<!-- Template CSS-->
+	<link href="../assets/css/style.css?v=1775952328" rel="stylesheet">
+
+	<!-- Dragon Theme CSS -->
+	<link href="../assets/css/dragon.css" rel="stylesheet">
+
+	<!-- Custom CSS-->
+	<link href="../assets/css/custom.css?v=1775952328" rel="stylesheet">
+
+
+	<!-- Snipcart E-Commerce -->
+	<style>
+		/* Dark theme overrides for Snipcart modal */
+		.snipcart-modal__container { z-index: 99999 !important; }
+		.snipcart { --color-default: #fff; --color-alt: rgba(255,255,255,0.7); --borderColor-default: rgba(255,255,255,0.1); --bgColor-default: #13151e; --bgColor-alt: #1a1c28; --bgColor-input: #0e1019; --color-input: #fff; --color-inputLabel: rgba(255,255,255,0.6); --borderColor-input: rgba(255,255,255,0.15); --color-badge: #fff; --bgColor-badge: #8B0000; --color-link: #FF4D4D; --color-link-hover: #ff6b6b; --color-icon: #FF4D4D; --bgColor-buttonPrimary: #8B0000; --bgColor-buttonPrimary-hover: #a00000; --color-buttonPrimary: #fff; --bgColor-buttonSecondary: transparent; --color-buttonSecondary: #FF4D4D; --borderColor-buttonSecondary: #8B0000; --borderColor-buttonSecondary-hover: #FF4D4D; }
+		.snipcart-cart-header { background: #0e1019 !important; }
+		.snipcart-item-line { border-color: rgba(255,255,255,0.06) !important; }
+	</style>
+
+	<!-- Google AdSense -->
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5492466041818466" crossorigin="anonymous"></script>
+	<link rel="manifest" href="/manifest.json">
+<meta name="author" content="MildNorman">
+<meta property="article:author" content="MildNorman">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Comp Crusade Dev Diary Pt 4: Posting a Post-Mortem","datePublished":"Fri, 17 Apr 2026 15:00:05 +0000","description":"In this week’s Trench Crusade Dev Diary, Ryan and Norman debrief and post-mortem the competitive event they ran at Adepticon!","publisher":{"@type":"Organization","name":"Dragon's Den"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://dragonsshadow.com/posts/comp-crusade-dev-diary-pt-4-posting-a-post-mortem.html"},"author":{"@type":"Person","name":"MildNorman"}}</script>
+</head>
+
+<body class="preloader-is--active ">
+
+	<div class="site-wrapper site-layout--default">
+
+		<!-- Header
+		================================================== -->
+		<header id="header" class="site-header site-header--bottom">
+		
+			<!-- Logo - Image Based -->
+			<div class="header-logo header-logo--img">
+				<a href="../index.html"><img src="../assets/img/dragon/app/DragonCircleLogo.png" srcset="../assets/img/dragon/app/DragonCircleLogo.png 2x" alt="Dragon's Den"></a>
+			</div>
+			<!-- Logo - Image Based / End -->
+		
+		
+			<!-- Main Navigation -->
+			<nav class="main-nav">
+				<ul class="main-nav__list">
+					<li><a href="../home.html">Home</a></li>
+					<li><a href="../news.html">News</a></li>
+					<li><a href="../shop.html">Shop</a></li>
+					<li><a href="#">Features <span class="main-nav__toggle">&nbsp;</span></a>
+						<div class="main-nav__megamenu">
+							<div class="row">
+								<div class="mega-col mega-col--5">
+									<div class="mega-col__title"><span class="mega-icon"><img src="../assets/img/dragon/app/d20.png" class="mega-icon-img" alt="Projects"></span> Project Pages</div>
+									<ul>
+										<li><a href="../dragon.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/Dragon Horn Logo.png" class="mega-link-icon-img" alt="Dragon"></span>Dragon Social</a></li>
+										<li><a href="../little-grotto.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/GodotImage.png" class="mega-link-icon-img" alt="Little Grotto"></span>Little Grotto</a></li>
+										<li><a href="../shadow-coin.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/ShadowCoinLogo.png" class="mega-link-icon-img" alt="Shadow Coin"></span>Shadow Coin</a></li>
+									</ul>
+								</div>
+								<div class="mega-col mega-col--5">
+									<div class="mega-col__title"><span class="mega-icon"><img src="../assets/img/dragon/app/quill.png" class="mega-icon-img" alt="Creative"></span> Creative Projects</div>
+									<ul>
+										<li><a href="../midnight-coup.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/moon-icon.png" class="mega-link-icon-img" alt="Midnight Coup"></span>Midnight Coup</a></li>
+										<li><a href="../all-the-animals.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/paw-icon.png" class="mega-link-icon-img" alt="All the Animals"></span>All the Animals</a></li>
+										<li><a href="../obsidian-templates.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/gem-icon.png" class="mega-link-icon-img" alt="Obsidian Templates"></span>Obsidian Templates</a></li>
+									</ul>
+								</div>
+								<div class="mega-col mega-col--5">
+									<div class="mega-col__title"><span class="mega-icon"><img src="../assets/img/dragon/app/anvil.png" class="mega-icon-img" alt="Tools"></span> Tools and Utilities</div>
+									<ul>
+										<li><a href="../tools.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/anvil.png" class="mega-link-icon-img" alt="Tools"></span>Tool Suite</a></li>
+										<li><a href="#"><span class="mega-link-icon"><img src="../assets/img/dragon/app/monitor.png" class="mega-link-icon-img" alt="Utilities"></span>Utilities</a></li>
+										<li><a href="../plugins.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/spellbook.png" class="mega-link-icon-img" alt="Plugins"></span>Plugins</a></li>
+										<li><a href="#"><span class="mega-link-icon"><img src="../assets/img/dragon/app/shield.png" class="mega-link-icon-img" alt="Mods"></span>Mods</a></li>
+									</ul>
+								</div>
+								<div class="mega-col mega-col--5">
+									<div class="mega-col__title"><span class="mega-icon"><img src="../assets/img/dragon/app/mana.png" class="mega-icon-img" alt="Community"></span> Community</div>
+									<ul>
+										<li><a href="#"><span class="mega-link-icon"><img src="../assets/img/dragon/app/magnifying-glass-icon.png" class="mega-link-icon-img" alt="Browse"></span>Browse Community Creations</a></li>
+										<li><a href="../plugins-submit.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/teleport.png" class="mega-link-icon-img" alt="Submit Plugin"></span>Submit a Plugin</a></li>
+										<li><a href="#"><span class="mega-link-icon"><img src="../assets/img/dragon/app/edit.png" class="mega-link-icon-img" alt="Submit Mod"></span>Submit a Mod</a></li>
+										<li><a href="#"><span class="mega-link-icon"><img src="../assets/img/dragon/app/scroll.png" class="mega-link-icon-img" alt="Docs"></span>Creation Docs</a></li>
+									</ul>
+								</div>
+								<div class="mega-col mega-col--5">
+									<div class="mega-col__title"><span class="mega-icon"><img src="../assets/img/dragon/app/crystal-ball.png" class="mega-icon-img" alt="Details"></span> Details</div>
+									<ul>
+										<li><a href="../about.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/scroll.png" class="mega-link-icon-img" alt="About"></span>About</a></li>
+										<li><a href="#"><span class="mega-link-icon"><img src="../assets/img/dragon/app/swords.png" class="mega-link-icon-img" alt="Apply"></span>Apply</a></li>
+										<li><a href="../contact.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/inbox-icon.png" class="mega-link-icon-img" alt="Contact"></span>Contact</a></li>
+										<li><a href="../login-register.html"><span class="mega-link-icon"><img src="../assets/img/dragon/app/user-icon.png" class="mega-link-icon-img" alt="Account"></span>Account</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</nav>
+			<!-- Main Navigation / End -->
+		
+			<!-- Header Actions -->
+			<div class="header-actions">
+				<div class="header-top-bar-toggle d-md-none hide">
+					<svg role="img" class="df-icon df-icon--joystick">
+						<use xlink:href="../assets/img/necromancers.svg#joystick"/>
+					</svg>
+					<svg role="img" class="df-icon df-icon--close">
+						<use xlink:href="../assets/img/necromancers.svg#close"/>
+					</svg>
+				</div>
+				<div class="header-social-toggle d-none d-md-block">
+					<svg role="img" class="df-icon df-icon--thumb-up">
+						<use xlink:href="../assets/img/necromancers.svg#thumb-up"/>
+					</svg>
+					<span class="header-social-toggle__plus">&nbsp;</span>
+					<ul class="social-menu social-menu--header">
+						<li><a href="https://www.youtube.com/channel/UC6cBaDPwZoDH5oTpnMd3CRw" target="_blank" rel="noopener"><span class="link-subtitle">YouTube</span>Videos</a></li>
+						<li><a href="https://www.twitch.tv/lshadowedl" target="_blank" rel="noopener"><span class="link-subtitle">Twitch</span>Live</a></li>
+						<li><a href="https://bsky.app/profile/ishadowedi.bsky.social" target="_blank" rel="noopener"><span class="link-subtitle">Bluesky</span>Updates</a></li>
+						<li><a href="https://github.com/IShadowedI" target="_blank" rel="noopener"><span class="link-subtitle">GitHub</span>Projects</a></li>
+					</ul>
+				</div>
+				<div class="header-cart-toggle">
+					<svg role="img" class="df-icon df-icon--bag">
+						<use xlink:href="../assets/img/necromancers.svg#bag"/>
+					</svg>
+					<svg role="img" class="df-icon df-icon--close">
+						<use xlink:href="../assets/img/necromancers.svg#close"/>
+					</svg>
+					<span class="header-cart-toggle__items-count">0</span>
+				</div>
+				<div class="header-search-toggle">
+					<svg role="img" class="df-icon df-icon--search">
+						<use xlink:href="../assets/img/necromancers.svg#search"/>
+					</svg>
+					<svg role="img" class="df-icon df-icon--search-close">
+						<use xlink:href="../assets/img/necromancers.svg#search-close"/>
+					</svg>
+				</div>
+				<div class="header-account hide">
+				<div class="header-account__avatar">
+					<svg role="img" class="df-icon df-icon--account" style="width: 32px; height: 32px; fill: currentColor;">
+						<use xlink:href="../assets/img/necromancers.svg#account"/>
+					</svg>
+				</div>
+				<div class="header-account__body">
+					Welcome!
+					<div class="header-account__name">Guest</div>
+				</div>
+				<div class="header-account__icon">
+					<a href="../login-register.html" title="Sign In / Register">
+						<svg role="img" class="df-icon df-icon--account">
+							<use xlink:href="../assets/img/necromancers.svg#account"/>
+						</svg>
+					</a>
+				</div>
+			</div>
+				<div class="header-menu-toggle">
+					<div class="header-menu-toggle__inner">
+						<span>&nbsp;</span>
+						<span>&nbsp;</span>
+						<span>&nbsp;</span>
+					</div>
+				</div>
+			</div>
+			<!-- Header Actions / End -->
+		</header>
+		<!-- Header / End -->
+
+		<!-- Content
+		================================================== -->
+		<main class="site-content" id="wrapper">
+			<div class="site-content__inner">
+				<div class="site-content__holder">
+					<!-- Post -->
+					<article class="post post--single">
+						<figure class="post__thumbnail">
+							<img src="../assets/img/samples/news-v1-post-img-02.jpg" alt="Comp Crusade Dev Diary Pt 4: Posting a Post-Mortem">
+						</figure>
+						<ul class="post__sharing">
+							<li class="post__sharing-item post__sharing-item--menu"><a href="../home.html"><i>&nbsp;</i></a></li>
+							<li class="post__sharing-item"><a href="#" data-social="facebook"></a></li>
+							<li class="post__sharing-item"><a href="#" data-social="twitter"></a></li>
+						</ul>
+						<div class="post__header">
+							<div class="post__cats h6">
+								<span class="color-warning">Wargaming</span>
+							</div>
+							<h2 class="post__title h3">Comp Crusade Dev Diary Pt 4: Posting a Post-Mortem</h2>
+							<div class="post__meta">
+								<span class="meta-item meta-item--date">April 17th, 2026</span>
+								<span class="meta-item meta-item--source">via <a href="https://www.goonhammer.com/comp-crusade-dev-diary-pt-4-posting-a-post-mortem/" target="_blank" rel="noopener noreferrer">Goonhammer</a></span>
+							</div>
+						</div>
+						<div class="post__body">
+							<div class="tdb-block-inner td-fix-index"><p><span style="font-weight: 400;">Welcome back to Comp Crusade, the column wherein we update you all about our process of creating our competitive organized play pack for Trench Crusade! <a href="https://www.goonhammer.com/comp-crusade-dev-diary-pt-3-chasing-changes/">Last time we talked</a> about our most recent update to the pack and what we had our eyes on for changes, and since that post we went to Adepticon and ran our event! With those rules no less! Let’s take a look at how it went.</span></p>
+<h1><span style="font-weight: 400;">The Event</span></h1>
+<p></p><figure id="attachment_239248" aria-describedby="caption-attachment-239248" style="width: 1024px" class="wp-caption alignnone"><noscript><img data-attachment-id="239248" data-permalink="https://www.goonhammer.com/comp-crusade-dev-diary-pt-4-posting-a-post-mortem/pxl_20260327_172931288-raw-01-cover/" data-orig-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-scaled.jpg" data-orig-size="2560,1928" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;1.85&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;Pixel 7 Pro&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1774614571&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;6.81&quot;,&quot;iso&quot;:&quot;672&quot;,&quot;shutter_speed&quot;:&quot;0.01015&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="PXL_20260327_172931288.RAW-01.COVER" data-image-description="" data-image-caption="" data-medium-file="assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-1.jpg" data-large-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-2000x1506.jpg" class="wp-image-239248 size-medium" src="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-1.jpg" alt="" sizes="(max-width: 1024px) 100vw, 1024px" /></noscript><img data-attachment-id="239248" data-permalink="https://www.goonhammer.com/comp-crusade-dev-diary-pt-4-posting-a-post-mortem/pxl_20260327_172931288-raw-01-cover/" data-orig-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-scaled.jpg" data-orig-size="2560,1928" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;1.85&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;Pixel 7 Pro&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1774614571&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;6.81&quot;,&quot;iso&quot;:&quot;672&quot;,&quot;shutter_speed&quot;:&quot;0.01015&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="PXL_20260327_172931288.RAW-01.COVER" data-image-description="" data-image-caption="" data-medium-file="assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-1.jpg" data-large-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-2000x1506.jpg" class="lazyload wp-image-239248 size-medium" src="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201024%20771%22%3E%3C/svg%3E" data-src="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-1.jpg" alt="" data-srcset="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-1.jpg 1024w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-2000x1506.jpg 2000w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-768x578.jpg 768w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-1536x1157.jpg 1536w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-2048x1542.jpg 2048w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-150x113.jpg 150w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-300x226.jpg 300w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-696x524.jpg 696w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-1068x804.jpg 1068w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-1920x1446.jpg 1920w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-558x420.jpg 558w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_172931288.RAW-01.COVER_-80x60.jpg 80w" data-sizes="(max-width: 1024px) 100vw, 1024px"><figcaption id="caption-attachment-239248" class="wp-caption-text">People having fun! At our event no less!</figcaption></figure><p></p>
+<p><b>Norman:</b><span style="font-weight: 400;"> Before we dive into the event itself, we did a good amount before the event after the packet was done and dusted. First we mandated list submission and proxy approval. List submission was simply because this was a new tournament format and we wanted to make sure folks weren’t trying to take exploration items or other things that wouldn’t be legal in one off games. Proxy approval was a bit more of an involved process. Trench Crusade is a miniature agnostic game, and everything we do for the game is in the name of making it more accessible, not less. That said, we needed to make sure models were within reason, we couldn’t have folks take the Artillery Witch statue from upstairs and throw it on a 32mm base. As such we had folks submit every model they were taking that wasn’t an official FFI sculpt. We didn’t turn down any requests, just a few models like tank palanquins were asked to be based up a tiny bit. We’ll probably consider doing this for all our future events.</span></p>
+<p><span style="font-weight: 400;">For those who didn’t take a look at the event itself, we ran a tournament using our pack that was 4 rounds long at Adepticon. We had 24 players signed up, which filled out in under 5 minutes of launching tickets, and this meant we could end with 1-2 undefeated. Each round lasted 2 hours and 15 minutes, giving players ample (perhaps too much) time to finish their games at a leisurely pace. Each table used the layout we outlined in the pack and was provided with the pieces of terrain necessary for the player placed mechanic. This was </span><i><span style="font-weight: 400;">fine</span></i><span style="font-weight: 400;"> but honestly the terrain could’ve looked better, we’re gonna have to step up our game in the next event.</span></p>
+<p><b>Ryan</b><span style="font-weight: 400;">: As with any event, there were some fun logistics bumps we had to hurdle but in the end, our attendees had an amazing time and that’s what’s important. One player had a really good quote that stuck with me, and I would paraphrase it as, “If this is the worst that this type of Trench Crusade event is going to look, then I am really excited to see the next one.” Things are going to keep getting better and having a positive outlook from both the people that participated in the event as well as from all of the other support we’ve had is a massive boost to our morale (and my super fragile and weak ego).&nbsp;</span></p>
+<h2><span style="font-weight: 400;">Burgeoning Meta (or Lack Thereof)</span></h2>
+<p></p><figure id="attachment_226524" aria-describedby="caption-attachment-226524" style="width: 1024px" class="wp-caption alignnone"><noscript><img data-attachment-id="226524" data-permalink="https://www.goonhammer.com/trench-crusade-faction-focus-heretic-legion/heretic-troopers/" data-orig-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-scaled.jpg" data-orig-size="2560,1928" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;1.7&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;Pixel 10 Pro XL&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1764884781&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;2.02&quot;,&quot;iso&quot;:&quot;123&quot;,&quot;shutter_speed&quot;:&quot;0.015885&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="Heretic Troopers" data-image-description="" data-image-caption="&lt;p&gt;Heretic Troopers &#8211; Credit: Ace&lt;/p&gt;
+" data-medium-file="assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-3.jpg" data-large-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-2000x1506.jpg" class="size-medium wp-image-226524" src="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-3.jpg" alt="" sizes="(max-width: 1024px) 100vw, 1024px" /></noscript><img data-attachment-id="226524" data-permalink="https://www.goonhammer.com/trench-crusade-faction-focus-heretic-legion/heretic-troopers/" data-orig-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-scaled.jpg" data-orig-size="2560,1928" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;1.7&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;Pixel 10 Pro XL&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1764884781&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;2.02&quot;,&quot;iso&quot;:&quot;123&quot;,&quot;shutter_speed&quot;:&quot;0.015885&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="Heretic Troopers" data-image-description="" data-image-caption="<p>Heretic Troopers – Credit: Ace</p>
+" data-medium-file="assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-3.jpg" data-large-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-2000x1506.jpg" class="lazyload size-medium wp-image-226524" src="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201024%20771%22%3E%3C/svg%3E" data-src="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-3.jpg" alt="" data-srcset="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-3.jpg 1024w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-2000x1506.jpg 2000w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-768x578.jpg 768w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-1536x1157.jpg 1536w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-2048x1542.jpg 2048w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-150x113.jpg 150w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-300x226.jpg 300w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-696x524.jpg 696w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-1068x804.jpg 1068w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-1920x1446.jpg 1920w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-558x420.jpg 558w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2025/12/Heretic-Troopers-80x60.jpg 80w" data-sizes="(max-width: 1024px) 100vw, 1024px"><figcaption id="caption-attachment-226524" class="wp-caption-text">Heretic Troopers – Credit: Ace</figcaption></figure><p></p>
+<p><b>Ryan</b><span style="font-weight: 400;">: The most common faction we saw was Heretic Naval Raiders, which makes sense as they have access to the Anti-Material Rifle, as well as +1 Dice dash rolls. Although this was the case, there was a really solid spread of factions, with each one being represented at least once. Unfortunately, Black Grail and Court of the Seven-Headed Serpent only had one player each, but with only 24 players, I’m sure a larger data set could provide different results. Something interesting we saw in feedback was the dichotomy between people stating that the layout both “favored shooting” and “favored melee,” meaning that both avenues were valid strategies when list building. The ‘top table’ was Gas-Grenade Launcher Trench Ghosts versus double Anchorite Shrine Saint Methodist – slow pew pew vs fast punchy punch. The game came down to the wire and was very exciting, and I think it’s safe to say at least with our limited playtest size that right now there’s no obvious ‘big bad’ that can abuse the format. Now, if any of you nerds think that the Adepticon field was ‘soft’ and want to flex how big their competitive hog is, you’ll just have to come out to the next event and prove your stuff!&nbsp;</span></p>
+<p><b>Norman:</b><span style="font-weight: 400;"> There is a </span><i><span style="font-weight: 400;">lot</span></i><span style="font-weight: 400;"> of talk on the World Wide Web about what factions are the best, or busted, or unplayable, or whatever. This sort of thing is natural with modern gaming, but it’s important to note that a lot of that is bullshit in the context of TC. Obviously there are good mechanics and good factions, but there simply isn’t enough data with enough controls to definitively rank and stack factions and units. Terrain for example is such a massive factor that is inconsistent across experiences. This is why we have the layout, although that’s not to say our layout is what makes for “true” Trench Crusade. An open field will always favor a gunline and a twisting maze of corridors will always favor close range fighters. There are a bunch of other factors too, things like army availability, prominent picks for equipment for locals, and even counter list building can all contribute to an army feeling over or under whelming.</span></p>
+<p><span style="font-weight: 400;">All of that is to say, I think if this event taught us anything about Trench Crusade is that the game is far less solved as some might think. And if you disagree, like Ryan said, show up and shut us up.</span></p>
+<h1><span style="font-weight: 400;">The Feedback</span></h1>
+<h2><span style="font-weight: 400;">Layout/Player Placed Terrain</span></h2>
+<p></p><figure id="attachment_239250" aria-describedby="caption-attachment-239250" style="width: 1024px" class="wp-caption alignnone"><noscript><img data-attachment-id="239250" data-permalink="https://www.goonhammer.com/comp-crusade-dev-diary-pt-4-posting-a-post-mortem/pxl_20260327_150352974-raw-01-cover/" data-orig-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-scaled.jpg" data-orig-size="2560,1928" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;1.85&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;Pixel 7 Pro&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1774605832&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;6.81&quot;,&quot;iso&quot;:&quot;2008&quot;,&quot;shutter_speed&quot;:&quot;0.006572&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="PXL_20260327_150352974.RAW-01.COVER" data-image-description="" data-image-caption="" data-medium-file="assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-4.jpg" data-large-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-2000x1506.jpg" class="wp-image-239250 size-medium" src="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-4.jpg" alt="" sizes="(max-width: 1024px) 100vw, 1024px" /></noscript><img data-attachment-id="239250" data-permalink="https://www.goonhammer.com/comp-crusade-dev-diary-pt-4-posting-a-post-mortem/pxl_20260327_150352974-raw-01-cover/" data-orig-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-scaled.jpg" data-orig-size="2560,1928" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;1.85&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;Pixel 7 Pro&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1774605832&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;6.81&quot;,&quot;iso&quot;:&quot;2008&quot;,&quot;shutter_speed&quot;:&quot;0.006572&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="PXL_20260327_150352974.RAW-01.COVER" data-image-description="" data-image-caption="" data-medium-file="assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-4.jpg" data-large-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-2000x1506.jpg" class="lazyload wp-image-239250 size-medium" src="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201024%20771%22%3E%3C/svg%3E" data-src="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-4.jpg" alt="" data-srcset="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-4.jpg 1024w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-2000x1506.jpg 2000w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-768x578.jpg 768w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-1536x1157.jpg 1536w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-2048x1542.jpg 2048w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-150x113.jpg 150w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-300x226.jpg 300w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-696x524.jpg 696w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-1068x804.jpg 1068w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-1920x1446.jpg 1920w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-558x420.jpg 558w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260327_150352974.RAW-01.COVER_-80x60.jpg 80w" data-sizes="(max-width: 1024px) 100vw, 1024px"><figcaption id="caption-attachment-239250" class="wp-caption-text">The sickest shit that could happen on our layout</figcaption></figure><p></p>
+<p><b>Norman:</b><span style="font-weight: 400;"> Ah, the layout. I gotta tell you guys, deciding to do fixed terrain has been, by far, bar none, the decision that has led to the most pain in my ass I’ve experienced in my design career. We stand by our decision to do it; we feel it’s important to remove terrain as a variable for our events in particular and provide a milestone to build from and around for new players making tables at home to make sure the game plays smoothly. Not gonna lie, we were really nervous about this going into the event. We spent a long time working on this and we didn’t have time to make it look as good as we wanted.&nbsp;</span></p>
+<p><span style="font-weight: 400;">The good news is the layout was pretty widely well received. We didn’t see players abusing any particular strategies on it and a lot of different army types all felt like they could do well. We sent out a survey after the event and the biggest complaint folks had was a lack of variety across the event. We’ll be working on that part, but that means we’re on the right track.</span></p>
+<p><span style="font-weight: 400;">The Player Placed Terrain however was kinda a big ol’ failure. As we mentioned in our last dev diary, we felt it wasn’t super impactful in our tests but it was an idea that got a lot of good press when we announced it so we decided to let it ride for the event. Turns out our layout is dense enough that with the rules we put in place to prevent move blocking abuse there wasn’t space to actually put down the terrain in meaningful places. We’ll likely just take the dangerous and difficult terrain and integrate it straight into the layout and ditch the extra barricades all together.</span></p>
+<h2><span style="font-weight: 400;">Dual Lists</span></h2>
+<p><b>Ryan</b><span style="font-weight: 400;">: Most players brought two lists, but did not end up using both. With this statistic, it was interesting to see that most players actually do like the concept of it, as it allowed some freedom to not become pigeonholed into ‘auto-losing’ certain matchups, which was the initial intent as well. With more factions, updates, and possibly a ‘meta’ forming for this format, we will be keeping a close eye on any developments involving dual lists. Word on the street for other skirmish type games for example, Infinity, is that success can be done with one list, but those who tailor their second list for either a matchup, or to excel at a certain mission, will find an easier time achieving victory. We will </span><i><span style="font-weight: 400;">never</span></i><span style="font-weight: 400;"> require both lists to be used at least once at an event, but there may be some scenario designs that could influence players into skewing in a certain direction in order to get an advantage, and further the skill ceiling as well.&nbsp;</span></p>
+<h2><span style="font-weight: 400;">Scenarios</span></h2>
+<p><b>Norman</b><span style="font-weight: 400;">: Honestly to my surprise, the scenarios were the most well-received thing we debuted at this event. We had an even spread of love for each one (except </span><b>Sword Driven Deep</b><span style="font-weight: 400;">, RIP) for each person’s favorite scenario and exactly 0 people had anything negative to say about the scenarios themselves. We’re gonna keep working on these but we’re gonna try and go weirder.</span></p>
+<p><b>Ryan</b><span style="font-weight: 400;">: For the scenarios, we know we went pretty safe in terms of the design for most of these. We wanted to make sure that the luck and excitement came from the player’s decisions and interactions with the layout, rather than coin flips related to seeing if a player was going to score points or not (IE, passing a Risky Action with no bonuses). Going forward, we have a plethora of fun ideas to test that would possibly pull from the default Trench Crusade scenarios and map design, attempting to add more ‘funk’ to the games played while not piling on more cumbersome mechanics to try and remember. To our </span><i><span style="font-weight: 400;">expected</span></i><span style="font-weight: 400;"> disappointment, </span><b>Sword Driven Deep</b><span style="font-weight: 400;">, aka American Football wasn’t that well received. We have gotten some feedback about it being a very fun scenario to play, but it needs some cleanup and reworking before the next time we put it back on the table for players. Otherwise, different types of deployment (corners, short sides, long sides) can also help with variation throughout the event and the scenarios.&nbsp;</span></p>
+<h1><span style="font-weight: 400;">The Future</span></h1>
+<p><b>Ryan</b><span style="font-weight: 400;">: The grind doesn’t stop! We are super thankful for all of the feedback from both before and after the event, and we will continue to iterate and make this funny little sweaty corner of Trench Crusade a fun and exciting blast that integrates both skill expression and exciting narrative moments on the table. There are a few events coming up where we will be running updated versions of what we’ve been making, including layouts, scenarios, and other fun improvements and tweaks! These will be announced soon enough so you nerds can get your tickets to try and strut your stuff.&nbsp;</span></p>
+<p><b>Norman:</b><span style="font-weight: 400;"> The most important bit of feedback we got from the survey is that everyone had a great time and 90% of players who filled out our survey said they’re excited to come back next year! We’ve got a few more events planned this year so be sure to come through and say hey and roll some dice. There might even be some cool trophies for you to win.</span></p>
+<p></p><figure id="attachment_239251" aria-describedby="caption-attachment-239251" style="width: 771px" class="wp-caption alignnone"><noscript><img data-attachment-id="239251" data-permalink="https://www.goonhammer.com/comp-crusade-dev-diary-pt-4-posting-a-post-mortem/pxl_20260323_191743412-raw-01-cover/" data-orig-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-scaled.jpg" data-orig-size="1928,2560" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;1.85&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;Pixel 7 Pro&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1774275463&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;6.81&quot;,&quot;iso&quot;:&quot;862&quot;,&quot;shutter_speed&quot;:&quot;0.007235&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="PXL_20260323_191743412.RAW-01.COVER" data-image-description="" data-image-caption="" data-medium-file="assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-6.jpg" data-large-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-1506x2000.jpg" class="wp-image-239251 size-medium" src="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-6.jpg" alt="" sizes="(max-width: 771px) 100vw, 771px" /></noscript><img data-attachment-id="239251" data-permalink="https://www.goonhammer.com/comp-crusade-dev-diary-pt-4-posting-a-post-mortem/pxl_20260323_191743412-raw-01-cover/" data-orig-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-scaled.jpg" data-orig-size="1928,2560" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;1.85&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;Pixel 7 Pro&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1774275463&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;6.81&quot;,&quot;iso&quot;:&quot;862&quot;,&quot;shutter_speed&quot;:&quot;0.007235&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="PXL_20260323_191743412.RAW-01.COVER" data-image-description="" data-image-caption="" data-medium-file="assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-6.jpg" data-large-file="https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-1506x2000.jpg" class="lazyload wp-image-239251 size-medium" src="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20771%201024%22%3E%3C/svg%3E" data-src="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-6.jpg" alt="" data-srcset="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-6.jpg 771w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-1506x2000.jpg 1506w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-768x1020.jpg 768w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-1157x1536.jpg 1157w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-1542x2048.jpg 1542w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-150x199.jpg 150w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-300x398.jpg 300w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-696x924.jpg 696w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-1068x1418.jpg 1068w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-1920x2550.jpg 1920w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-316x420.jpg 316w, https://d1w82usnq70pt2.cloudfront.net/wp-content/uploads/2026/04/PXL_20260323_191743412.RAW-01.COVER_-scaled.jpg 1928w" data-sizes="(max-width: 771px) 100vw, 771px"><figcaption id="caption-attachment-239251" class="wp-caption-text">The replica bayonets we used for trophies at the event</figcaption></figure><p></p>
+<p><span style="font-weight: 400;">Looking forward though, we’re gonna work on expanding all these lessons learned into a proper competitive play pack for the community. In addition to making everything more modular so you can cherry pick the mechanics you like, we’ll be adding something like 4 more scenarios, 1-2 more layouts, and playing with more layered on rules to help foster a more competitive meta. We’re working very hard to provide the community with a set of rules that can do lifting in areas TOs don’t want to handle while also providing a framework where players have the freedom to play the game however they want.</span></p>
+<p><span style="font-weight: 400;">There are even more really exciting things going on now that Adepticon’s done that I can’t talk to just yet, but we’re really excited to share what we’re cooking with you all. We’ll continue to post here on our dev diary as we come up with more stuff and canvas for more feedback so watch this web zone. Until then, feel free to reach out at </span><a href="mailto:CompCrusade@Goonhammer.com"><span style="font-weight: 400;">CompCrusade@Goonhammer.com</span></a><span style="font-weight: 400;"> or shoot us an @ in the Goonhammer Discord. See you all next time!</span></p>
+<p><i><span style="font-weight: 400;">Have any questions or feedback? Drop us a note in the comments below or email us at </span></i><a href="mailto:contact@goonhammer.com"><b><i>contact@goonhammer.com</i></b></a><i><span style="font-weight: 400;">. Want articles like this linked in your inbox every Monday morning? Sign up for </span></i><a href="https://www.goonhammer.com/newsletter/"><b><i>our newsletter</i></b></a><i><span style="font-weight: 400;">. And don’t forget that you can </span></i><a href="https://www.patreon.com/goonhammer"><b><i>support us on Patreon</i></b></a><i><span style="font-weight: 400;"> for backer rewards like early video content, Administratum access, an ad-free experience on our website, and subscriber-only content covering competitive Warhammer 40K!</span></i></p>
+<div class="cb_p6_patreon_button" style="text-align:center !important;margin-top:15px;margin-bottom:15px;"><a rel="nofollow" target="_blank" href="https://www.patreon.com/goonhammer?utm_content=post_button&amp;utm_medium=patron_button_and_widgets_plugin&amp;utm_campaign=3873277&amp;utm_term=&amp;utm_source=https://www.goonhammer.com/comp-crusade-dev-diary-pt-4-posting-a-post-mortem/"><noscript><img style="margin-top: 10px;margin-bottom: 10px;max-width:200px;width:100%;height:auto;" src="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-8.png"></noscript><img class="lazyload" style="margin-top: 10px;margin-bottom: 10px;max-width:200px;width:100%;height:auto;" src="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20210%20140%22%3E%3C/svg%3E" data-src="../assets/img/news/comp-crusade-dev-diary-pt-4-posting-a-post-mortem-8.png"></a></div>
+
+<div id="jp-relatedposts" class="jp-relatedposts">
+	<h3 class="jp-relatedposts-headline"><em>Related</em></h3>
+</div></div>
+							<div class="spacer"></div>
+							<p class="text-small"><em>Originally published on <a href="https://www.goonhammer.com/comp-crusade-dev-diary-pt-4-posting-a-post-mortem/" target="_blank" rel="noopener noreferrer">Goonhammer</a>.</em></p>
+						</div>
+					</article>
+					<!-- Post / End -->
+					
+					<div class="ds-comments" id="user-comments">
+						<h4 class="ds-comments__title">Leave a Comment</h4>
+						<script src="https://giscus.app/client.js"
+							data-repo="IShadowedI/Website"
+							data-repo-id="R_kgDOSA7yEg"
+							data-category="Comments"
+							data-category-id="DIC_kwDOSA7yEs4C6yFb"
+							data-mapping="pathname"
+							data-strict="0"
+							data-reactions-enabled="1"
+							data-emit-metadata="0"
+							data-input-position="bottom"
+							data-theme="preferred_color_scheme"
+							data-lang="en"
+							data-loading="lazy"
+							crossorigin="anonymous"
+							async>
+						</script>
+					</div>
+					<div class="ds-comments" id="user-comments">
+						<h4 class="ds-comments__title">Leave a Comment</h4>
+						<script src="https://giscus.app/client.js"
+							data-repo="IShadowedI/Website"
+							data-repo-id=""
+							data-category="Article Comments"
+							data-category-id=""
+							data-mapping="pathname"
+							data-strict="0"
+							data-reactions-enabled="1"
+							data-emit-metadata="0"
+							data-input-position="top"
+							data-theme="dark_dimmed"
+							data-lang="en"
+							data-loading="lazy"
+							crossorigin="anonymous"
+							async>
+						</script>
+					</div>
+				</div>
+			</div>
+		
+<!-- Ad: Multiplex Horizontal -->
+<div class="ds-ad-unit ds-ad-unit--multiplex">
+  <ins class="adsbygoogle" style="display:block"
+    data-ad-format="autorelaxed"
+    data-ad-client="ca-pub-5492466041818466" data-ad-slot="4177776122"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+		</main>
+		
+
+		<!-- Overlay -->
+		<div class="site-overlay"></div>
+		<!-- Overlay / End -->
+
+		<!-- Cart Panel -->
+		<div class="cart-panel">
+			<h4 class="cart-panel__title text-white">Shopping Cart (<span class="cart-panel__items-count">0</span>)</h4>
+			<div class="cart-panel__content">
+				<div class="table-responsive">
+					<table class="table shop-table">
+						<thead>
+							<tr>
+								<th class="product__info">Product</th>
+								<th class="product__quantity">Quantity</th>
+								<th class="product__total">Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="4" class="text-center" style="padding: 30px 0; color: #6c757d; border: none;">
+									<p style="margin: 0; font-size: 14px;">Your cart is empty.</p>
+									<a href="../shop.html" class="btn btn-primary btn-sm" style="margin-top: 10px;">Browse the Shop</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="cart-panel__totals">
+					<div class="table-responsive">
+						<table class="table">
+							<tfoot>
+								<tr class="cart-panel__subtotal">
+									<th>Cart Subtotal</th>
+									<td>
+										<span class="amount"><span class="amount-currency">$</span>0.00</span>
+									</td>
+								</tr>
+								<tr class="cart-panel__order-total">
+									<th>Cart Total</th>
+									<td><span class="amount"><span class="amount-currency">$</span>0.00</span></td>
+								</tr>
+								</tfoot>
+						</table>
+						<a href="../shop.html" class="btn btn-primary">Browse the Shop</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Cart Panel / End -->
+		<!-- Search Panel -->
+		<div class="search-panel">
+			<div class="search-panel__content">
+				<form action="#" id="header-search-form" class="search-form search-form--header">
+					<input type="text" class="form-control" value="" placeholder="What are you looking for...?">
+				</form>
+				<span>Write what you are looking for, choose the filters and press enter to begin your search!</span>
+			</div>
+		</div>
+		<!-- Search Panel / End -->
+		<!-- Menu Panel -->
+		<div class="menu-panel">
+			<ul class="menu-panel__mobile-bar list-unstyled d-md-none">
+				<li class="mobile-bar-item">
+					<a class="mobile-bar-item__header collapsed" data-toggle="collapse" href="#mobile_collapse_1" role="button" aria-expanded="false" aria-controls="mobile_collapse_1">
+						Main Links
+						<span class="main-nav__toggle">&nbsp;</span>
+					</a>
+					<div id="mobile_collapse_1" class="collapse mobile-bar-item__body">
+						<!-- Mobile Navigation -->
+						<nav class="mobile-nav">
+							<ul class="mobile-nav__list">
+<li>
+									<a href="../home.html">Home</a>
+								</li>
+								<li>
+									<a href="../news.html">News</a>
+								</li>
+								<li>
+									<a href="../shop.html">Shop</a>
+								</li>
+								<li>
+									<a href="#">Project Pages</a>
+									<ul class="mobile-nav__sub">
+										<li><a href="../dragon.html">Dragon Social</a></li>
+										<li><a href="../little-grotto.html">Little Grotto</a></li>
+										<li><a href="../shadow-coin.html">Shadow Coin</a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="#">Creative Projects</a>
+									<ul class="mobile-nav__sub">
+										<li><a href="../midnight-coup.html">Midnight Coup</a></li>
+										<li><a href="../all-the-animals.html">All the Animals</a></li>
+										<li><a href="../obsidian-templates.html">Obsidian Templates</a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="#">Tools and Utilities</a>
+									<ul class="mobile-nav__sub">
+										<li><a href="../tools.html">Tool Suite</a></li>
+										<li><a href="#">Utilities</a></li>
+										<li><a href="../plugins.html">Plugins</a></li>
+										<li><a href="#">Mods</a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="#">Community</a>
+									<ul class="mobile-nav__sub">
+										<li><a href="#">Browse Community Creations</a></li>
+										<li><a href="../plugins-submit.html">Submit a Plugin</a></li>
+										<li><a href="#">Submit a Mod</a></li>
+										<li><a href="#">Creation Docs</a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="#">Details</a>
+									<ul class="mobile-nav__sub">
+										<li><a href="../about.html">About</a></li>
+										<li><a href="#">Apply</a></li>
+										<li><a href="../contact.html">Contact</a></li>
+										<li><a href="../login-register.html">Account</a></li>
+									</ul>
+								</li>
+							</ul>
+									</nav>
+									<!-- Mobile Navigation / End -->
+					</div>
+				</li>
+				<li class="mobile-bar-item">
+					<a class="mobile-bar-item__header collapsed" data-toggle="collapse" href="#mobile_collapse_2" role="button" aria-expanded="false" aria-controls="mobile_collapse_2">
+						Social Links
+						<span class="main-nav__toggle">&nbsp;</span>
+					</a>
+					<div id="mobile_collapse_2" class="collapse mobile-bar-item__body">
+						<ul class="social-menu social-menu--mobile-bar">
+							<li><a href="https://www.youtube.com/channel/UC6cBaDPwZoDH5oTpnMd3CRw" target="_blank" rel="noopener" data-social="youtube"><span>YouTube</span></a></li>
+							<li><a href="https://www.twitch.tv/lshadowedl" target="_blank" rel="noopener" data-social="twitch"><span>Twitch</span></a></li>
+							<li><a href="https://github.com/IShadowedI" target="_blank" rel="noopener" data-social="github"><span>GitHub</span></a></li>
+							<li><a href="https://bsky.app/profile/ishadowedi.bsky.social" target="_blank" rel="noopener" data-social="bluesky"><span>Bluesky</span></a></li>
+							<li><a href="https://www.tiktok.com/@ishadowedi" target="_blank" rel="noopener" data-social="tiktok"><span>TikTok</span></a></li>
+							<li><a href="https://www.curseforge.com/members/lshadowedl/projects" target="_blank" rel="noopener" data-social="curseforge"><span>CurseForge</span></a></li>
+						</ul>
+					</div>
+				</li>
+				<li class="mobile-bar-item mobile-bar-item--info">
+					<a class="mobile-bar-item__header collapsed" data-toggle="collapse" href="#mobile_collapse_3" role="button" aria-expanded="false" aria-controls="mobile_collapse_3">
+						Get in Touch!
+						<span class="main-nav__toggle">&nbsp;</span>
+					</a>
+					<div id="mobile_collapse_3" class="collapse mobile-bar-item__body">
+						<div class="mobile-bar-item__inner">
+							<ul class="list-unstyled">
+								<li class="info-box">
+									<div class="info-box__label">Socials Hub</div>
+									<div class="info-box__content"><a href="https://shadoweds.carrd.co/" target="_blank" rel="noopener">shadoweds.carrd.co</a></div>
+								</li>
+								<li class="info-box">
+									<div class="info-box__label">General inquiries</div>
+									<div class="info-box__content"><a href="mailto:inquiries@dragonsshadow.com">inquiries<span class="color-primary">@</span>dragonsshadow.com</a></div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+				<li class="mobile-bar-item mobile-bar-item--partners">
+					<a id="mobile_collapse_4h" class="mobile-bar-item__header collapsed" data-toggle="collapse" href="#mobile_collapse_4" role="button" aria-expanded="false" aria-controls="mobile_collapse_4">
+						Our Partners
+						<span class="main-nav__toggle">&nbsp;</span>
+					</a>
+					<div id="mobile_collapse_4" class="collapse mobile-bar-item__body">
+						<div class="mobile-bar-item__inner">
+							<ul class="widget-partners-mobile-carousel">
+								<li>
+									<img src="../assets/img/samples/partner-carousel-img-01.png" alt="">
+								</li>
+								<li>
+									<img src="../assets/img/samples/partner-carousel-img-02.png" alt="">
+								</li>
+								<li>
+									<img src="../assets/img/samples/partner-carousel-img-03.png" alt="">
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+				<li class="mobile-bar-item">
+					<a class="mobile-bar-item__header" href="../shop-account-settings.html">
+						Account Settings
+					</a>
+				</li>
+				<li class="mobile-bar-item">
+					<a class="mobile-bar-item__header" href="../login-register.html">
+						Logout
+					</a>
+				</li>
+			</ul>
+			<div class="menu-panel__top-bar">
+				<div class="top-bar-filter">
+					<label class="top-bar-filter__label">Competitions</label>
+					<select class="cs-select">
+						<option value="all" selected>All Competitions</option>
+						<option value="x2018">Xenowatch 2018 Tournament</option>
+						<option value="xwleague">Xenowatch West League</option>
+						<option value="xeleague">Xenowatch East League</option>
+						<option value="xusacup">Xenowatch USA Cup</option>
+					</select>
+				</div>
+				<ul class="top-bar-carousel">
+					<li class="top-bar-carousel__headline x2018">
+						<span>Xenowatch 2018 Tournament</span>
+					</li>
+					<li class="top-bar-carousel__item x2018">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">2</span>
+									</div>
+									<div class="match-result match-result--live">
+										<span class="match-result__label">25:42</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-2" role="group">
+											<img src="../assets/img/samples/logo-rhinos-30.png" srcset="../assets/img/samples/logo-rhinos-30@2x.png 2x" alt="RRH Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">RRH</div>
+												<div class="match-team__country ">JPN</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">1</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">01/12</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="top-bar-carousel__item x2018">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-5" role="group">
+											<img src="../assets/img/samples/logo-eagles-30.png" srcset="../assets/img/samples/logo-eagles-30@2x.png 2x" alt="FEG Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">FEG</div>
+												<div class="match-team__country ">FRA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">4</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">3</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">01/09</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="top-bar-carousel__item x2018">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">1</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-3" role="group">
+											<img src="../assets/img/samples/logo-bulls-30.png" srcset="../assets/img/samples/logo-bulls-30@2x.png 2x" alt="AGB Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">AGB</div>
+												<div class="match-team__country ">SPA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">3</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">01/05</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="top-bar-carousel__item x2018">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-4" role="group">
+											<img src="../assets/img/samples/logo-panthers-30.png" srcset="../assets/img/samples/logo-panthers-30@2x.png 2x" alt="ICP Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">ICP</div>
+												<div class="match-team__country ">POR</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">0</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">5</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">01/02</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+		
+		
+					<li class="top-bar-carousel__headline xwleague">
+						<span>Xenowatch West League</span>
+					</li>
+					<li class="top-bar-carousel__item xwleague">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">1</span>
+									</div>
+									<div class="match-result match-result--live">
+										<span class="match-result__label">12:33</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-2" role="group">
+											<img src="../assets/img/samples/logo-rhinos-30.png" srcset="../assets/img/samples/logo-rhinos-30@2x.png 2x" alt="RRH Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">RRH</div>
+												<div class="match-team__country ">JPN</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">0</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">01/12</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="top-bar-carousel__item xwleague">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-4" role="group">
+											<img src="../assets/img/samples/logo-panthers-30.png" srcset="../assets/img/samples/logo-panthers-30@2x.png 2x" alt="ICP Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">ICP</div>
+												<div class="match-team__country ">POR</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">0</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">3</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">01/07</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="top-bar-carousel__item xwleague">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-5" role="group">
+											<img src="../assets/img/samples/logo-eagles-30.png" srcset="../assets/img/samples/logo-eagles-30@2x.png 2x" alt="FEG Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">FEG</div>
+												<div class="match-team__country ">FRA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">5</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">2</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">01/04</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="top-bar-carousel__item xwleague">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">1</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-3" role="group">
+											<img src="../assets/img/samples/logo-bulls-30.png" srcset="../assets/img/samples/logo-bulls-30@2x.png 2x" alt="AGB Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">AGB</div>
+												<div class="match-team__country ">SPA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">3</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">01/03</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+		
+		
+					<li class="top-bar-carousel__headline xeleague">
+						<span>Xenowatch East League</span>
+					</li>
+					<li class="top-bar-carousel__item xeleague">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">4</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-2" role="group">
+											<img src="../assets/img/samples/logo-rhinos-30.png" srcset="../assets/img/samples/logo-rhinos-30@2x.png 2x" alt="RRH Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">RRH</div>
+												<div class="match-team__country ">JPN</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">1</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">12/18</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="top-bar-carousel__item xeleague">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">4</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-3" role="group">
+											<img src="../assets/img/samples/logo-bulls-30.png" srcset="../assets/img/samples/logo-bulls-30@2x.png 2x" alt="AGB Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">AGB</div>
+												<div class="match-team__country ">SPA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">3</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">12/11</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="top-bar-carousel__item xeleague">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-4" role="group">
+											<img src="../assets/img/samples/logo-panthers-30.png" srcset="../assets/img/samples/logo-panthers-30@2x.png 2x" alt="ICP Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">ICP</div>
+												<div class="match-team__country ">POR</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">0</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">2</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">12/09</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+		
+		
+					<li class="top-bar-carousel__headline xusacup">
+						<span>Xenowatch USA Cup</span>
+					</li>
+					<li class="top-bar-carousel__item xusacup">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">1</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-3" role="group">
+											<img src="../assets/img/samples/logo-bulls-30.png" srcset="../assets/img/samples/logo-bulls-30@2x.png 2x" alt="AGB Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">AGB</div>
+												<div class="match-team__country ">SPA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">3</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">11/17</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="top-bar-carousel__item xusacup">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-5" role="group">
+											<img src="../assets/img/samples/logo-eagles-30.png" srcset="../assets/img/samples/logo-eagles-30@2x.png 2x" alt="FEG Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">FEG</div>
+												<div class="match-team__country ">FRA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">2</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">1</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">11/11</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="top-bar-carousel__item xusacup">
+						<div class="match-score-inline">
+							<div class="match-score-inline__body">
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-4" role="group">
+											<img src="../assets/img/samples/logo-panthers-30.png" srcset="../assets/img/samples/logo-panthers-30@2x.png 2x" alt="ICP Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">ICP</div>
+												<div class="match-team__country ">POR</div>
+										</figcaption>
+									</figure>
+									<div class="match-result match-result--winner-right">
+										<span class="match-result__score">3</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">Final</span>
+									</div>
+								</div>
+								<div class="match-score-inline__body-inner">
+									<figure class="match-team" role="group">
+										<figure class="match-team-logo match-team-logo--team-1" role="group">
+											<img src="../assets/img/samples/logo-necromancers-30.png" srcset="../assets/img/samples/logo-necromancers-30@2x.png 2x" alt="NCR Logo">
+										</figure>
+										<figcaption>
+											<div class="match-team__name">NCR</div>
+												<div class="match-team__country ">USA</div>
+										</figcaption>
+									</figure>
+									<div class="match-result">
+										<span class="match-result__score">2</span>
+									</div>
+									<div class="match-result">
+										<span class="match-result__label">11/06</span>
+									</div>
+								</div>
+							</div>
+							<div class="match-score-inline__footer">
+								<ul class="match-stats-links">
+									<li>
+										<a href="../matches-overview-1.html">
+											<svg role="img" class="df-icon df-icon--overview">
+												<use xlink:href="../assets/img/necromancers.svg#overview"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-stats-1.html">
+											<svg role="img" class="df-icon df-icon--stats">
+												<use xlink:href="../assets/img/necromancers.svg#stats"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-lineups-1.html">
+											<svg role="img" class="df-icon df-icon--lineups">
+												<use xlink:href="../assets/img/necromancers.svg#lineups"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a href="../matches-replay.html">
+											<svg role="img" class="df-icon df-icon--replay">
+												<use xlink:href="../assets/img/necromancers.svg#replay"/>
+											</svg>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="menu-panel__content d-none d-md-flex">
+				<div class="menu-panel__navigation">
+					<div id="dl-menu" class="dl-menuwrapper">
+						<!-- <button class="dl-trigger">Open Menu</button> -->
+						<ul class="dl-menu dl-menuopen">
+							<li class="">
+								<a href="../home.html">Home</a>
+							</li>
+							<li class="">
+								<a href="../team-selection-2.html">Teams</a>
+								<ul class="dl-submenu">
+									<li class="">
+										<a href="#">Our Roster</a>
+										<ul class="dl-submenu">
+											<li class=""><a href="../team-selection-1.html">Roster Grid</a></li>
+											<li class=""><a href="../team-selection-2.html">Roster Cards</a></li>
+											<li class=""><a href="../team-selection-3.html">Roster List</a></li>
+											<li class=""><a href="../team-selection-4.html">Roster Compact</a></li>
+										</ul>
+									</li>
+									<li class="">
+										<a href="../team-overview.html">Team Overview</a>
+										<ul class="dl-submenu">
+											<li class=""><a href="../team-overview.html">Team Profile</a></li>
+											<li class=""><a href="../team-overview-2.html">Team Stats</a></li>
+										</ul>
+									</li>
+									<li class=""><a href="../team-player-1.html">Player Profile</a></li>
+									<li class=""><a href="../management-and-staff.html">Management & Staff</a></li>
+									<li class=""><a href="../staff-member.html">Staff Member<span class="badge badge-danger">New</span></a></li>
+								</ul>
+							</li>
+							<li class=""><a href="#">Matches</a>
+								<ul class="dl-submenu">
+									<li class=""><a href="../matches-scores.html">Results</a></li>
+									<li class=""><a href="../matches-upcoming.html">Upcoming Matches</a></li>
+									<li class=""><a href="../matches-standings.html">Standings</a></li>
+									<li class=""><a href="#">Match Stats</a>
+										<ul class="dl-submenu">
+											<li class=""><a href="../matches-stats-1.html">Game Stats</a></li>
+											<li class=""><a href="../matches-stats-2.html">Round Stats</a></li>
+											<li class=""><a href="../matches-stats-3.html">Player Stats</a></li>
+										</ul>
+									</li>
+									<li class="">
+										<a href="#">Match Lineups</a>
+										<ul class="dl-submenu">
+											<li class=""><a href="../matches-lineups-1.html">Lineups Grid</a></li>
+											<li class=""><a href="../matches-lineups-2.html">Lineups Detail</a></li>
+											<li class=""><a href="../matches-lineups-3.html">Lineups Compare</a></li>
+										</ul>
+									</li>
+									<li class=""><a href="#">Match Overviews</a>
+										<ul class="dl-submenu">
+											<li class=""><a href="../matches-overview-1.html">Match Summary</a></li>
+											<li class=""><a href="../matches-overview-2.html">Match Detail</a></li>
+										</ul>
+									</li>
+									<li class=""><a href="../matches-replay.html">Match Replay</a></li>
+								</ul>
+							</li>
+							<li class="">
+								<a href="../news.html">News</a>
+							</li>
+							<li>
+								<a href="#">Features</a>
+								<ul class="dl-submenu dl-megamenu">
+									<div class="row">
+										<ul class="col-md-6 col-lg-3">
+											<li><strong>Project Pages</strong></li>
+											<li><a href="../dragon.html">Dragon Social</a></li>
+											<li><a href="../little-grotto.html">Little Grotto</a></li>
+											<li><a href="../shadow-coin.html">Shadow Coin</a></li>
+										</ul>
+										<ul class="col-md-6 col-lg-3">
+											<li><strong>Tools and Utilities</strong></li>
+											<li><a href="../tools.html">Tool Suite</a></li>
+											<li><a href="#">Utilities</a></li>
+											<li><a href="../plugins.html">Plugins</a></li>
+											<li><a href="#">Mods</a></li>
+										</ul>
+										<ul class="col-md-6 col-lg-3">
+											<li><strong>Community</strong></li>
+											<li><a href="#">Browse Community Creations</a></li>
+											<li><a href="../plugins-submit.html">Submit a Plugin</a></li>
+											<li><a href="#">Submit a Mod</a></li>
+											<li><a href="#">Creation Docs</a></li>
+										</ul>
+										<ul class="col-md-6 col-lg-3">
+											<li><strong>Details</strong></li>
+											<li><a href="../about.html">About</a></li>
+											<li><a href="#">Apply</a></li>
+											<li><a href="../contact.html">Contact</a></li>
+											<li><a href="../login-register.html">Account</a></li>
+										</ul>
+									</div>
+								</ul>
+							</li>
+							<li class="">
+								<a href="../shop.html">Shop</a>
+								<ul class="dl-submenu">
+									<li class=""><a href="../shop.html">Merch Store</a></li>
+									<li class=""><a href="../shop-2.html">Shop Grid</a></li>
+									<li class=""><a href="../shop-product.html">Product Details</a></li>
+									<li class=""><a href="../shop-checkout.html">Checkout</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="menu-panel__widget-area">
+					<div class="row">
+						<div class="col-md-12 col-lg-6 col-xl-5">
+							<!-- Widget: About Shadow -->
+							<section class="widget widget-text">
+								<h5 class="widget__title">About IShadowedI</h5>
+								<div class="widget__content">
+									<p>
+										Creator, developer, and the mind behind Dragon’s Den. Building tools, games, and communities for tabletop fans and creators alike.
+									</p>
+									<div class="info-box">
+										<div class="info-box__label">Socials Hub</div>
+										<div class="info-box__content"><a href="https://shadoweds.carrd.co/" target="_blank" rel="noopener">shadoweds.carrd.co</a></div>
+									</div>
+									<div class="info-box">
+										<div class="info-box__label">Get in touch</div>
+										<div class="info-box__content"><a href="mailto:inquiries@dragonsshadow.com">inquiries<span class="color-primary">@</span>dragonsshadow.com</a></div>
+									</div>
+								</div>
+							</section>
+							<!-- Widget: About Shadow / End -->
+						</div>
+						<div class="col-md-12 col-lg-6 col-xl-5 offset-xl-2 mt-5 mt-lg-0">
+							<!-- Widget: Shadow's Links -->
+							<section class="widget widget-contact-info">
+								<h5 class="widget__title">Shadow’s Links</h5>
+								<div class="widget__content">
+									<p>
+										Follow IShadowedI across the web — subscribe, watch live, and check out the latest projects.
+									</p>
+									<ul class="social-menu social-menu--default">
+										<li><a href="https://www.youtube.com/channel/UC6cBaDPwZoDH5oTpnMd3CRw" target="_blank" rel="noopener" data-social="youtube"></a></li>
+										<li><a href="https://www.twitch.tv/lshadowedl" target="_blank" rel="noopener" data-social="twitch"></a></li>
+										<li><a href="https://github.com/IShadowedI" target="_blank" rel="noopener" data-social="github"></a></li>
+										<li><a href="https://bsky.app/profile/ishadowedi.bsky.social" target="_blank" rel="noopener" data-social="bluesky"></a></li>
+										<li><a href="https://www.tiktok.com/@ishadowedi" target="_blank" rel="noopener" data-social="tiktok"></a></li>
+										<li><a href="https://www.curseforge.com/members/lshadowedl/projects" target="_blank" rel="noopener" data-social="curseforge"></a></li>
+									</ul>
+								</div>
+							</section>
+							<!-- Widget: Shadow's Links / End -->
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<!-- Widget: Partners Carousel -->
+							<section class="widget widget-partners-carousel">
+								<h5 class="widget__title">Sponsors & Partners</h5>
+								<div class="widget__content">
+									<ul>
+										<li>
+											<img src="../assets/img/samples/partner-carousel-img-01.png" alt="">
+										</li>
+										<li>
+											<img src="../assets/img/samples/partner-carousel-img-02.png" alt="">
+										</li>
+										<li>
+											<img src="../assets/img/samples/partner-carousel-img-03.png" alt="">
+										</li>
+										<li>
+											<img src="../assets/img/samples/partner-carousel-img-01.png" alt="">
+										</li>
+										<li>
+											<img src="../assets/img/samples/partner-carousel-img-02.png" alt="">
+										</li>
+										<li>
+											<img src="../assets/img/samples/partner-carousel-img-03.png" alt="">
+										</li>
+									</ul>
+								</div>
+							</section>
+							<!-- Widget: Partners Carousel / End -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Menu Panel / End -->
+
+	</div>
+
+	<div class="preloader-overlay">
+		<div id="js-preloader" class="preloader">
+			<div class="preloader-inner fadeInUp">
+				<div class="pong-loader"></div>
+				<svg role="img" class="df-icon df-icon--preloader-arcade">
+					<use xlink:href="../assets/img/necromancers.svg#preloader-arcade"/>
+				</svg>
+			</div>
+		</div>
+	</div>
+
+	<!-- The cursor elements -->
+	<div class="df-custom-cursor-wrap">
+		<div id="df-custom-cursor"></div>
+	</div>
+
+	<!-- Javascript Files
+	================================================== -->
+	<!-- Core JS -->
+	<script src="../assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../assets/vendor/jquery/jquery-migrate.min.js"></script>
+	<script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="../assets/js/core.js"></script>
+	
+	<!-- Vendor JS -->
+	
+	<!-- Template JS -->
+	<script src="../assets/js/init.js"></script>
+	<script src="../assets/js/custom.js"></script>
+	
+	<!-- Duotone SVG color filter -->
+	<svg xmlns="http://www.w3.org/2000/svg" class="svg-filters">
+		<filter id="duotone_base">
+			<feColorMatrix type="matrix" result="grayscale"
+				values="1 0 0 0 0
+								1 0 0 0 0
+								1 0 0 0 0
+								0 0 0 1 0" />
+			<feComponentTransfer color-interpolation-filters="sRGB" result="duotone_base_filter">
+				<feFuncR type="table" tableValues="0.082352941176471 0.419607843137255"></feFuncR>
+				<feFuncG type="table" tableValues="0.090196078431373 0.443137254901961"></feFuncG>
+				<feFuncB type="table" tableValues="0.125490196078431 0.6"></feFuncB>
+				<feFuncA type="table" tableValues="0 1"></feFuncA>
+			</feComponentTransfer>
+		</filter>
+	</svg>
+
+
+	<!-- Snipcart Container (must be before </body>) -->
+	<script>
+	  window.SnipcartSettings = {
+	    publicApiKey: "NTQ2YzQ4NzItYmZlOS00OWQyLWE3YWYtNTkyMmY2NzlhMzFhNjM5MTE2MzUwOTYzODMxMDQ4",
+	    loadStrategy: "on-user-interaction",
+	    modalStyle: "side",
+	    currency: "usd",
+	    version: "3.7.1"
+	  };
+	  (function(){var c,d;(d=(c=window.SnipcartSettings).version)!=null||(c.version="3.0");var s,S;(S=(s=window.SnipcartSettings).timeoutDuration)!=null||(s.timeoutDuration=2750);var l,p;(p=(l=window.SnipcartSettings).domain)!=null||(l.domain="cdn.snipcart.com");var w,u;(u=(w=window.SnipcartSettings).protocol)!=null||(w.protocol="https");var m,g;(g=(m=window.SnipcartSettings).loadCSS)!=null||(m.loadCSS=!0);var y=window.SnipcartSettings.version.includes("v3.0.0-ci")||window.SnipcartSettings.version!="3.0"&&window.SnipcartSettings.version.localeCompare("3.4.0",void 0,{numeric:!0,sensitivity:"base"})===-1,f=["focus","mouseover","touchmove","scroll","keydown"];window.LoadSnipcart=o;document.readyState==="loading"?document.addEventListener("DOMContentLoaded",r):r();function r(){window.SnipcartSettings.loadStrategy?window.SnipcartSettings.loadStrategy==="on-user-interaction"&&(f.forEach(function(t){return document.addEventListener(t,o)}),setTimeout(o,window.SnipcartSettings.timeoutDuration)):o()}var a=!1;function o(){if(a)return;a=!0;var t=document.getElementsByTagName("head")[0],n=document.createElement("script");n.src=window.SnipcartSettings.protocol+"://"+window.SnipcartSettings.domain+"/themes/v"+window.SnipcartSettings.version+"/default/snipcart.js";n.async=!0;t.appendChild(n);var i=document.createElement("link");i.rel="stylesheet";i.type="text/css";i.href=window.SnipcartSettings.protocol+"://"+window.SnipcartSettings.domain+"/themes/v"+window.SnipcartSettings.version+"/default/snipcart.css";t.appendChild(i)}})();
+	</script>
+</body>
+
+</html>
