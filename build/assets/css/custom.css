@@ -2285,11 +2285,18 @@ article.post-grid,
   margin-top: 2px;
 }
 
-/* News Feed — article cards below the hero */
+/* ============================================================
+   News Feed — "More News" grid (rebuilt 2026-04-26)
+   Vertical cards in a responsive CSS grid.
+   ============================================================ */
 .news-feed {
-  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 32px;
 }
 .news-feed__header {
+  grid-column: 1 / -1;
   font-family: 'Rajdhani', sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -2298,39 +2305,41 @@ article.post-grid,
   color: #fff;
   border-left: 4px solid #8B0000;
   padding-left: 12px;
-  margin-bottom: 16px;
+  margin: 0 0 4px;
 }
 .news-feed-card {
   display: flex;
-  gap: 16px;
+  flex-direction: column;
   background: #12131e;
-  border: 1px solid rgba(255,255,255,0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 12px;
-  transition: border-color 0.2s;
+  margin: 0;
+  min-width: 0;
+  transition: border-color 0.2s, transform 0.2s;
 }
 .news-feed-card:hover {
-  border-color: rgba(255,255,255,0.1);
+  border-color: rgba(255, 77, 77, 0.4);
+  transform: translateY(-2px);
 }
 .news-feed-card__thumb {
-  width: 220px;
-  flex-shrink: 0;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
+  background: #0e1019;
 }
 .news-feed-card__thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  min-height: 140px;
 }
 .news-feed-card__body {
-  flex: 1;
-  padding: 14px 16px 14px 0;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  padding: 14px 16px 16px;
   min-width: 0;
 }
 .news-feed-card__cat {
@@ -2341,7 +2350,7 @@ article.post-grid,
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: #ff4d4d;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 .news-feed-card__title {
   font-family: 'Rajdhani', sans-serif;
@@ -2349,7 +2358,11 @@ article.post-grid,
   font-size: 16px;
   text-transform: uppercase;
   line-height: 1.25;
-  margin: 0 0 6px;
+  margin: 0 0 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .news-feed-card__title a {
   color: #fff;
@@ -2360,17 +2373,33 @@ article.post-grid,
 }
 .news-feed-card__excerpt {
   font-size: 13px;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.55);
   line-height: 1.5;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin: 0 0 6px;
+  margin: 0 0 12px;
+  flex: 1 1 auto;
 }
 .news-feed-card__meta {
   font-size: 11px;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: auto;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+@media (max-width: 1024px) {
+  .news-feed {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+@media (max-width: 560px) {
+  .news-feed {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
 }
 
 /* Pagination on news page */
@@ -2429,8 +2458,14 @@ article.post-grid,
   }
 }
 @media (max-width: 640px) {
-  .news-feed-card {
+  .news-featured-bar {
     flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .news-featured-bar__filters {
+    gap: 10px;
+    flex-wrap: wrap;
   }
 }
 
@@ -2466,23 +2501,6 @@ article.post-grid,
 .post__sharing a[href*="curseforge.com"],
 .social-menu.social-menu--links a[href*="curseforge.com"] {
   background-color: #f16436;
-}
-  .news-feed-card__thumb {
-    width: 100%;
-    height: 180px;
-  }
-  .news-feed-card__body {
-    padding: 12px 14px;
-  }
-  .news-featured-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  .news-featured-bar__filters {
-    gap: 10px;
-    flex-wrap: wrap;
-  }
 }
 
 /* ============================================================
