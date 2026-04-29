@@ -59,7 +59,7 @@
 
 	<!-- Custom CSS-->
 		<link href="assets/css/dragon.css" rel="stylesheet">
-	<link href="assets/css/custom.css?v=1777482050" rel="stylesheet">
+	<link href="assets/css/custom.css?v=1777482744" rel="stylesheet">
 
 
 	<!-- Google AdSense -->
@@ -549,6 +549,22 @@
 								</div>
 							</div>
 
+							<div class="shop-card" data-category="templates" data-price="0" data-name="FS Cinematic 2.35:1 Storyboard Pack">
+								<div class="shop-card__img">
+									<div class="shop-card__badge">Free</div>
+									<img class="shop-card__thumb" src="assets/img/shop/fs-cinematic-pack.svg" alt="FS Cinematic 2.35:1 Storyboard Pack">
+								</div>
+								<div class="shop-card__body">
+									<div class="shop-card__category">Templates &mdash; FrameShadow</div>
+									<h5 class="shop-card__title">FS Cinematic 2.35:1 Storyboard Pack</h5>
+									<p class="shop-card__desc">45 hand-composed cinematic storyboard templates at the 2.35:1 aspect ratio, purpose-built for the FrameShadow app. Includes the full KEYFRAME_NAMING_SYSTEM.md guide. PNG format, ready to import.</p>
+									<div class="shop-card__footer">
+										<span class="shop-card__price">Free</span>
+										<a href="assets/downloads/FSCinematic2.35-1Pack.zip" class="btn btn-primary btn-sm" download="FSCinematic2.35-1Pack.zip">Download</a>
+									</div>
+								</div>
+							</div>
+
 							<div class="shop-card" data-category="assets" data-price="14.99" data-name="Fantasy Icon Set (200+)">
 								<div class="shop-card__img">
 									<div class="shop-card__badge">Popular</div>
@@ -994,24 +1010,41 @@
 							});
 
 							// Sidebar category clicks
-							var sidebarCats = document.querySelectorAll('.shop-sidebar__category, .shop-sidebar__sub li');
 							function syncSidebar(cat) {
 								document.querySelectorAll('.shop-sidebar__category').forEach(function(el) {
-									el.classList.toggle('shop-sidebar__category--active', el.getAttribute('data-category') === cat || cat === 'all' && el.getAttribute('data-category') === 'all');
+									el.classList.toggle('shop-sidebar__category--active', el.getAttribute('data-category') === cat || (cat === 'all' && el.getAttribute('data-category') === 'all'));
 								});
 							}
-							sidebarCats.forEach(function(el) {
+							function applyFilter(cat) {
+								activeCategory = cat;
+								filterCards();
+								syncSidebar(cat);
+								pills.forEach(function(p) {
+									p.classList.toggle('active', p.getAttribute('data-category') === cat);
+								});
+							}
+							// Cat-header click: toggle open/closed + filter to that category
+							document.querySelectorAll('.shop-sidebar__cat-header').forEach(function(header) {
+								header.addEventListener('click', function(e) {
+									e.stopPropagation();
+									var li = this.closest('.shop-sidebar__category');
+									if (!li) return;
+									var isOpen = li.classList.contains('shop-sidebar__category--open');
+									// Close all others
+									document.querySelectorAll('.shop-sidebar__category--open').forEach(function(el) {
+										el.classList.remove('shop-sidebar__category--open');
+									});
+									if (!isOpen) li.classList.add('shop-sidebar__category--open');
+									var cat = li.getAttribute('data-category');
+									if (cat) applyFilter(cat);
+								});
+							});
+							// Sub-item click: filter by sub-category
+							document.querySelectorAll('.shop-sidebar__sub li').forEach(function(el) {
 								el.addEventListener('click', function(e) {
 									e.stopPropagation();
 									var cat = this.getAttribute('data-category');
-									if (cat) {
-										activeCategory = cat;
-										filterCards();
-										syncSidebar(cat);
-										pills.forEach(function(p) {
-											p.classList.toggle('active', p.getAttribute('data-category') === cat);
-										});
-									}
+									if (cat) applyFilter(cat);
 								});
 							});
 						})();

@@ -1605,8 +1605,8 @@ article.post-grid,
   border-bottom: 1px solid rgba(255,255,255,.04);
   transition: color 0.15s, background 0.15s;
 }
-.shop-sidebar__category:hover .shop-sidebar__cat-header,
-.shop-sidebar__category--active .shop-sidebar__cat-header {
+.shop-sidebar__category--active .shop-sidebar__cat-header,
+.shop-sidebar__category--open .shop-sidebar__cat-header {
   color: #fff;
   background: var(--accent, #8B0000);
 }
@@ -1619,7 +1619,7 @@ article.post-grid,
   transition: max-height 0.3s ease;
 }
 .shop-sidebar__category--active .shop-sidebar__sub,
-.shop-sidebar__category:hover .shop-sidebar__sub {
+.shop-sidebar__category--open .shop-sidebar__sub {
   max-height: 200px;
 }
 .shop-sidebar__sub li {
