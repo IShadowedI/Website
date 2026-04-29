@@ -66,30 +66,32 @@ body.site-layout--horizontal.scroll-is--active {
 }
 
 /* ── Homepage: Project Showcase (uses template's blog-layout--style-4) ── */
-/* Project logos are transparent PNGs, not photos; show them centered on a
-   subtle gradient instead of letting them stretch like a news thumbnail. */
+/* Project thumbnails now show a screenshot preview of the destination page. */
 .home-projects .home-project .post__thumbnail {
-  background: linear-gradient(135deg, rgba(139, 0, 0, 0.14), rgba(0, 0, 0, 0.5));
+  background: #0a0a12;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 .home-projects .home-project .post__thumbnail img {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
-  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.55));
-  transition: transform 0.35s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: saturate(1.05);
+  transition: transform 0.5s ease, filter 0.3s ease;
 }
 .home-projects .home-project:hover .post__thumbnail img {
-  transform: scale(1.06);
+  transform: scale(1.04);
+  filter: saturate(1.15) brightness(1.05);
 }
 
-/* Per-project accent gradients on the thumbnail tile */
-.home-project--frame  .post__thumbnail { background: linear-gradient(135deg, rgba(139, 92, 246, 0.22), rgba(0, 0, 0, 0.55)); }
-.home-project--coin   .post__thumbnail { background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(0, 0, 0, 0.55)); }
-.home-project--grotto .post__thumbnail { background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(0, 0, 0, 0.55)); }
-.home-project--dragon .post__thumbnail { background: linear-gradient(135deg, rgba(139, 0, 0, 0.22), rgba(0, 0, 0, 0.55)); }
+/* Subtle accent ring on hover, per project */
+.home-project--frame:hover  .post__thumbnail { box-shadow: inset 0 0 0 2px rgba(139, 92, 246, 0.55); }
+.home-project--coin:hover   .post__thumbnail { box-shadow: inset 0 0 0 2px rgba(245, 158, 11, 0.55); }
+.home-project--grotto:hover .post__thumbnail { box-shadow: inset 0 0 0 2px rgba(16, 185, 129, 0.55); }
+.home-project--dragon:hover .post__thumbnail { box-shadow: inset 0 0 0 2px rgba(139, 0, 0, 0.65); }
 
 /* Smooth scrolling */
 html {
