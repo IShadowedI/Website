@@ -2417,3 +2417,41 @@ article.post-grid,
 .giscus-frame {
   width: 100% !important;
 }
+
+
+/* --------------------------------------
+   Nav priority + orphaned-overlay safety
+   Ensures the site header / main nav is always clickable, even if a
+   layout decoration or a left-over preloader overlay tries to capture
+   pointer events. The preloader itself uses transform:translateY(100%)
+   to slide off-screen when inactive, but on a few pages JS init has
+   been observed to leave pointer-events catching clicks; force them off
+   unless the preloader is active.
+   -------------------------------------- */
+.site-header,
+.site-header--bottom {
+  position: relative;
+  z-index: 1500;
+}
+.main-nav,
+.main-nav__list,
+.main-nav__list > li,
+.main-nav__list > li > a {
+  position: relative;
+  z-index: 2;
+}
+.preloader-overlay { pointer-events: none; }
+.preloader-is--active .preloader-overlay { pointer-events: auto; }
+
+/* Off-canvas / cart overlay should not eat clicks unless explicitly opened */
+.site-overlay { pointer-events: none; }
+.site-overlay-is--active .site-overlay,
+.cart-is--active .site-overlay,
+.search-is--active .site-overlay,
+.nav-is--active .site-overlay { pointer-events: auto; }
+
+/* --------------------------------------
+   Image-only project card (used by FrameShadow on home.html)
+   -------------------------------------- */
+.home-projects .home-project--image-only .post__body { display: none !important; }
+.home-projects .home-project--image-only .post__thumbnail { min-height: 240px; }
